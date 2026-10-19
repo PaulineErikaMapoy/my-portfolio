@@ -1,242 +1,235 @@
 // src/components/EventsHost.jsx
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import FadeIn from "./FadeIn";
+import SectionHeader from "./SectionHeader";
 
-import Event1 from "../assets/events/MovieNights_1.png";
-import Event2 from "../assets/events/Artwakening2025_2.png";
-import Event3 from "../assets/events/Unveil_1.png";
-import Event4 from "../assets/events/Unveil_2.png";
-import Event5 from "../assets/events/Artwakening2025_1.png";
-import Event6 from "../assets/events/HERizon_1.png";
-import Event7 from "../assets/events/HERizon_2.png";
-import Event8 from "../assets/events/MovieNights_2.png";
-import Event9 from "../assets/events/HandogNgiti_1.png";
-import Event10 from "../assets/events/DisasterAwarenessSeminar.png";
-import Event11 from "../assets/events/Technoweek_1.png";
-import Event12 from "../assets/events/Technoweek_2.png";
-import Event13 from "../assets/events/PINASing.png";
-import Event14 from "../assets/events/NSTP_1.png";
-import Event15 from "../assets/events/NSTP_2.png";
-import Event16 from "../assets/events/Artwakening2024_1.png";
-import Event17 from "../assets/events/Reform_1.png";
-import Event18 from "../assets/events/Reform_2.png";
-import Event19 from "../assets/events/Technoweek_3.png";
-import Event20 from "../assets/events/Pastpective_2.png";
+import toTheFuture from "../assets/events/ToTheFutureAndBeyond.jpg";
+import campRun from "../assets/events/CampRun.jpg";
+import cohort4Graduation from "../assets/events/Cohort4GraduationNight.jpg";
+import inPursuitOfProgress from "../assets/events/InPursuitOfProgress.JPG";
+import aitsLaunchPad from "../assets/events/AITS_ITLaunchPad.JPG";
+import innovMasterclass from "../assets/events/InnovMasterclass.jpg";
+import movieNights1 from "../assets/events/MovieNights_1.png";
+import artwakening2025b from "../assets/events/Artwakening2025_2.png";
+import unveil1 from "../assets/events/Unveil_1.png";
+import unveil2 from "../assets/events/Unveil_2.png";
+import artwakening2025a from "../assets/events/Artwakening2025_1.png";
+import herizon1 from "../assets/events/HERizon_1.png";
+import herizon2 from "../assets/events/HERizon_2.png";
+import movieNights2 from "../assets/events/MovieNights_2.png";
+import handogNgiti from "../assets/events/HandogNgiti_1.png";
+import technoweek1 from "../assets/events/Technoweek_1.png";
+import technoweek2 from "../assets/events/Technoweek_2.png";
+import nstp2 from "../assets/events/NSTP_2.png";
+import artwakening2024 from "../assets/events/Artwakening2024_1.png";
+import reform1 from "../assets/events/Reform_1.png";
+import technoweek3 from "../assets/events/Technoweek_3.png";
+import pastpective2 from "../assets/events/Pastpective_2.png";
 
-const images = [
-  Event1, Event2, Event3, Event4, Event5,
-  Event6, Event7, Event8, Event9, Event10,
-  Event11, Event12, Event13, Event14, Event15,
-  Event16, Event17, Event18, Event19, Event20,
+// Slideshow order: photo, event name, date
+const events = [
+  { img: campRun,             label: "DEVCON Camp Run: Go Agentic with Hermes Agent", date: "October 2, 2026" },
+  { img: cohort4Graduation,   label: "DEVCON Cohort 4 Graduation Night",              date: "August 27, 2026" },
+  { img: movieNights1,     label: "TechnoWeek 2026: Movie Nights",                          date: "February 16, 2026" },
+  { img: artwakening2025b, label: "Artwakening Festival 2025",                              date: "June 18, 2025" },
+  { img: unveil1,          label: "UNVEIL II: The Music Synergy Showcase",                  date: "January 21, 2026" },
+  { img: unveil2,          label: "UNVEIL II: The Music Synergy Showcase",                  date: "January 21, 2026" },
+  { img: artwakening2025a, label: "Artwakening Festival 2025",                              date: "June 18, 2025" },
+  { img: herizon1,         label: "HERizon: Kababaihan sa Lahat ng Sektor",                 date: "March 12, 2025" },
+  { img: herizon2,         label: "HERizon: Kababaihan sa Lahat ng Sektor",                 date: "March 12, 2025" },
+  { img: movieNights2,     label: "TechnoWeek 2026: Movie Nights",                          date: "February 16, 2026" },
+  { img: handogNgiti,      label: "Handog Ngiti 2026",                                      date: "December 18, 2025" },
+  { img: technoweek1,      label: "TechnoWeek 2026: Opening Ceremony",                      date: "February 16, 2026" },
+  { img: technoweek2,      label: "TechnoWeek 2026: Opening Ceremony",                      date: "February 16, 2026" },
+  { img: nstp2,            label: "General Assembly of the National Service Reserve Corps", date: "October 3, 2025" },
+  { img: artwakening2024,  label: "Artwakening Festival 2024",                              date: "June 20, 2024" },
+  { img: reform1,          label: "Re:Form Awards Night",                                   date: "March 18, 2026" },
+  { img: technoweek3,      label: "FS/SL Night",                                            date: "February 17, 2025" },
+  { img: pastpective2,     label: "Opening Ceremony of PastPective: A DocuFilm Festival",   date: "November 13, 2025" },
+  { img: inPursuitOfProgress, label: "In Pursuit Of Progress: A Multimedia Arts Seminar", date: "July 9, 2026" },
+  { img: toTheFuture,         label: "To The Future and Beyond: Exploring The Limitless Possibilities for Budding Careers in Computing Technology", date: "October 3, 2026" },
+  { img: aitsLaunchPad,       label: "AITS IT LaunchPad 2026",                        date: "June 8, 2026" },
+  { img: innovMasterclass,    label: "INNOV Masterclass 2026",                        date: "May 2, 2026" },
 ];
 
-const imageLabels = [
-  "TechnoWeek 2026: Movie Nights",
-  "Artwakening Festival 2025",
-  "UNVEIL II: The Music Synergy Showcase",
-  "UNVEIL II: The Music Synergy Showcase",
-  "Artwakening Festival 2025",
-  "HERizon: Kababaihan sa Lahat ng Sektor",
-  "HERizon: Kababaihan sa Lahat ng Sektor",
-  "TechnoWeek 2026: Movie Nights",
-  "Handog Ngiti 2026",
-  "Natural Disaster Awareness Seminar at Asociación de Damas de Filipinas, Inc.",
-  "TechnoWeek 2026: Opening Ceremony",
-  "TechnoWeek 2026: Opening Ceremony",
-  "PINASing and PINASambit 2024",
-  "General Assembly of the National Service Reserve Corps",
-  "General Assembly of the National Service Reserve Corps",
-  "Artwakening Festival 2024",
-  "Re:Form Awards Night",
-  "ReConvene Research Colloquium",
-  "FS/SL Night",
-  "Opening Ceremony of PastPective: A DocuFilm Festival",
+// Newest first; photos from the same day keep their featured order
+const newestFirst = [...events].sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+
+const sortOptions = [
+  { id: "featured", label: "Featured" },
+  { id: "newest",   label: "Newest first" },
 ];
 
-const imageDescriptions = [
-  "February 16, 2026", "June 18, 2025", "January 21, 2026",
-  "January 21, 2026", "June 18, 2025", "March 12, 2025",
-  "March 12, 2025", "February 16, 2026", "December 18, 2025",
-  "July 13, 2024", "February 16, 2026", "February 16, 2026",
-  "September 14, 2024", "October 3, 2025", "October 3, 2025",
-  "June 20, 2024", "March 18, 2026", "March 16, 2026",
-  "February 17, 2025", "November 13, 2025",
-];
+const total = events.length;
+const SLIDE_MS = 4500;
 
-const total = images.length;
+const pad = (n) => String(n).padStart(2, "0");
 
-function getSlideRole(index, current, total) {
-  const diff = (index - current + total) % total;
-  if (diff === 0) return "center";
-  if (diff === 1) return "next";
-  if (diff === total - 1) return "prev";
-  return diff > total / 2 ? "hidden-left" : "hidden-right";
-}
+const arrow = (d) => (
+  <svg fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-4 h-4" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+  </svg>
+);
 
 export default function EventsHost() {
   const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef(null);
+  const [playing, setPlaying] = useState(true);
+  const [hovering, setHovering] = useState(false);
+  const [sort, setSort] = useState("featured");
+  const list = sort === "newest" ? newestFirst : events;
+  const stripRef = useRef(null);
+  const thumbRefs = useRef([]);
+  const paused = !playing || hovering;
 
-  const goTo = useCallback((index) => {
-    setCurrent(((index % total) + total) % total);
-  }, []);
+  const goTo = (index) => setCurrent(((index % total) + total) % total);
 
-  const handlePrev = () => goTo(current - 1);
-  const handleNext = () => goTo(current + 1);
+  function changeSort(id) {
+    setSort(id);
+    setCurrent(0);
+  }
 
+  // Autoplay
   useEffect(() => {
-    if (isPaused) return;
-    timerRef.current = setTimeout(handleNext, 4000);
-    return () => clearTimeout(timerRef.current);
-  }, [current, isPaused]);
+    if (paused) return;
+    const t = setTimeout(() => setCurrent((c) => (c + 1) % total), SLIDE_MS);
+    return () => clearTimeout(t);
+  }, [current, paused]);
 
-  const slideStyles = {
-    center: {
-      // Wider landscape dimensions for center
-      width: "clamp(280px, 42vw, 520px)",
-      height: "clamp(170px, 26vw, 320px)",
-      transform: "translateX(0) scale(1)",
-      opacity: 1,
-      filter: "none",
-      zIndex: 3,
-      boxShadow: "0 20px 60px rgba(236,72,153,0.2), 0 4px 20px rgba(0,0,0,0.15)",
-    },
-    prev: {
-      width: "clamp(130px, 20vw, 240px)",
-      height: "clamp(80px, 12vw, 148px)",
-      transform: "translateX(clamp(-200px,-30vw,-160px)) scale(0.88)",
-      opacity: 0.5,
-      filter: "brightness(0.7) saturate(0.55)",
-      zIndex: 2,
-    },
-    next: {
-      width: "clamp(130px, 20vw, 240px)",
-      height: "clamp(80px, 12vw, 148px)",
-      transform: "translateX(clamp(160px,30vw,200px)) scale(0.88)",
-      opacity: 0.5,
-      filter: "brightness(0.7) saturate(0.55)",
-      zIndex: 2,
-    },
-    "hidden-left": {
-      width: "clamp(130px, 20vw, 240px)",
-      height: "clamp(80px, 12vw, 148px)",
-      transform: "translateX(clamp(-400px,-60vw,-320px)) scale(0.75)",
-      opacity: 0,
-      filter: "brightness(0.5)",
-      zIndex: 0,
-      pointerEvents: "none",
-    },
-    "hidden-right": {
-      width: "clamp(130px, 20vw, 240px)",
-      height: "clamp(80px, 12vw, 148px)",
-      transform: "translateX(clamp(320px,60vw,400px)) scale(0.75)",
-      opacity: 0,
-      filter: "brightness(0.5)",
-      zIndex: 0,
-      pointerEvents: "none",
-    },
-  };
+  // Keep the active thumbnail in view (scrolls only the strip, not the page)
+  useEffect(() => {
+    const strip = stripRef.current;
+    const thumb = thumbRefs.current[current];
+    if (!strip || !thumb) return;
+    strip.scrollTo({ left: thumb.offsetLeft - strip.clientWidth / 2 + thumb.clientWidth / 2, behavior: "smooth" });
+  }, [current]);
 
   return (
     <FadeIn>
-      <section
-        id="onstage"
-        className="max-w-5xl mx-auto px-4 py-20 md:py-28 text-center"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
+      <section id="onstage" className="section-container py-16 sm:py-20">
         {/* Header */}
-        <div className="space-y-3 max-w-2xl mx-auto mb-14">
-          <p className="text-xs font-semibold tracking-widest uppercase text-pink-500">
-            On Stage
-          </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-            Mic Check, <span className="text-pink-500">It's Me!</span>
-          </h2>
-          <p className="text-base sm:text-lg text-gray-500 leading-relaxed">
-            I started hosting in 2023 at my university, and since then I've
-            taken on a wide range of events, from formal programs to high-energy
-            celebrations, learning to adapt to whatever the moment calls for.
-          </p>
-        </div>
+        <SectionHeader
+          number="05"
+          eyebrow="On Stage"
+          title={<>Mic Check, <span className="text-pink-500">It's Me!</span></>}
+          subtitle="Hosting since 2023, from formal programs to high-energy celebrations."
+        />
 
-        {/* Stage */}
-        <div
-          className="relative flex items-center justify-center"
-          style={{ height: "clamp(200px, 34vw, 380px)" }}
-        >
-          {images.map((img, i) => {
-            const role = getSlideRole(i, current, total);
-            return (
-              <div
-                key={i}
-                className="absolute rounded-2xl overflow-hidden cursor-pointer select-none"
-                style={{
-                  ...slideStyles[role],
-                  transition: "all 0.55s cubic-bezier(0.4,0,0.2,1)",
-                }}
-                onClick={() => role !== "center" && goTo(i)}
-              >
-                <img
-                  src={img}
-                  alt={imageLabels[i]}
-                  className="w-full h-full object-cover"
-                  draggable={false}
-                />
-                {role === "center" && (
-                  <div className="absolute inset-0 rounded-2xl ring-2 ring-pink-400/40 pointer-events-none" />
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Caption */}
-        <div className="mt-8 min-h-[52px]">
-          <p className="text-base sm:text-lg font-medium text-gray-800">
-            {imageLabels[current]}
-          </p>
-          <p className="text-sm text-pink-500 tracking-wide mt-1">
-            {imageDescriptions[current]}
-          </p>
-        </div>
-
-        {/* Controls */}
-        <div className="flex items-center justify-center gap-4 mt-6">
-          <button
-            onClick={handlePrev}
-            aria-label="Previous slide"
-            className="w-10 h-10 rounded-full border border-pink-400 text-pink-500 flex items-center justify-center hover:bg-pink-500 hover:text-white transition-all duration-200 active:scale-95"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-          <div className="flex items-center gap-1.5">
-            {images.map((_, i) => (
+        {/* Sort switch */}
+        <div data-reveal className="flex items-center justify-center sm:justify-end gap-3 mb-5">
+          <span className="text-[11px] font-black tracking-widest uppercase text-gray-900 dark:text-white">Sort</span>
+          <div className="brutal-tag flex p-1 gap-1 bg-[var(--brutal-chip-bg)] !rounded-xl" role="group" aria-label="Sort event photos">
+            {sortOptions.map((o) => (
               <button
-                key={i}
-                onClick={() => goTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width: i === current ? "20px" : "6px",
-                  height: "6px",
-                  background: i === current ? "#ec4899" : "#f9a8d4",
-                }}
-              />
+                key={o.id}
+                onClick={() => changeSort(o.id)}
+                aria-pressed={sort === o.id}
+                className={`px-3 py-1.5 rounded-lg text-xs font-black transition-colors duration-200 ${
+                  sort === o.id ? "bg-[var(--accent)] text-white" : "text-gray-500 dark:text-gray-400 hover:text-[var(--accent-ink)]"
+                }`}
+              >
+                {o.label}
+              </button>
             ))}
           </div>
-          <button
-            onClick={handleNext}
-            aria-label="Next slide"
-            className="w-10 h-10 rounded-full border border-pink-400 text-pink-500 flex items-center justify-center hover:bg-pink-500 hover:text-white transition-all duration-200 active:scale-95"
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 lg:gap-8">
+          {/* Featured photo */}
+          <div
+            className="brutal-card relative overflow-hidden aspect-[3/2]"
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
+            {list.map((e, i) => (
+              <img loading="lazy" decoding="async"
+                key={e.img}
+                src={e.img}
+                alt={e.label}
+                draggable={false}
+                className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
+                  i === current ? "opacity-100 scale-100" : "opacity-0 scale-105"
+                }`}
+              />
+            ))}
+            <span className="brutal-tag absolute top-3 right-3 bg-[var(--accent)] text-white text-xs font-black px-2.5 py-1 tabular-nums">
+              {pad(current + 1)} / {total}
+            </span>
+          </div>
+
+          {/* Now showing card */}
+          <div className="brutal-card p-6 flex flex-col text-left">
+            <p className="text-[11px] font-black tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">
+              Now showing
+            </p>
+            <h3 className="text-xl font-black leading-snug text-gray-900 dark:text-white min-h-[3.5rem]">
+              {list[current].label}
+            </h3>
+            <span className="brutal-tag self-start mt-3 bg-pink-50 dark:bg-pink-500/15 text-[var(--accent-ink)] text-xs font-black px-2.5 py-1">
+              {list[current].date}
+            </span>
+
+            {/* Time until the next photo */}
+            <div className="mt-6 h-2.5 rounded-full border-2 border-[var(--brutal-chip-border)] overflow-hidden bg-[var(--brutal-chip-bg)]">
+              <div
+                key={`${current}-${paused}`}
+                className="h-full bg-[var(--accent)] origin-left"
+                style={paused ? { transform: "scaleX(0)" } : { animation: `slide-progress ${SLIDE_MS}ms linear forwards` }}
+              />
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center gap-3 mt-5">
+              <button onClick={() => goTo(current - 1)} aria-label="Previous photo" className="brutal-btn w-11 h-11 flex items-center justify-center bg-[var(--brutal-chip-bg)] text-gray-900 dark:text-white hover:bg-pink-50 dark:hover:bg-pink-500/15">
+                {arrow("M15 18l-6-6 6-6")}
+              </button>
+              <button
+                onClick={() => setPlaying((p) => !p)}
+                aria-label={playing ? "Pause slideshow" : "Play slideshow"}
+                className="brutal-btn flex-1 h-11 flex items-center justify-center gap-2 bg-[var(--accent)] text-white text-sm font-black"
+              >
+                {playing ? (
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+                ) : (
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5.5v13a1 1 0 001.5.86l11-6.5a1 1 0 000-1.72l-11-6.5A1 1 0 007 5.5z" /></svg>
+                )}
+                {playing ? "Pause" : "Play"}
+              </button>
+              <button onClick={() => goTo(current + 1)} aria-label="Next photo" className="brutal-btn w-11 h-11 flex items-center justify-center bg-[var(--brutal-chip-bg)] text-gray-900 dark:text-white hover:bg-pink-50 dark:hover:bg-pink-500/15">
+                {arrow("M9 18l6-6-6-6")}
+              </button>
+            </div>
+
+            <p className="mt-auto pt-6 text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-2xl font-black text-gray-900 dark:text-white">30+</span> events hosted and counting
+            </p>
+          </div>
+        </div>
+
+        {/* Thumbnail strip */}
+        <div
+          ref={stripRef}
+          data-reveal
+          className="mt-8 flex gap-3 overflow-x-auto px-1 pt-1 pb-3 [scrollbar-width:thin]"
+          role="tablist"
+          aria-label="Event photos"
+        >
+          {list.map((e, i) => (
+            <button
+              key={e.img}
+              ref={(el) => (thumbRefs.current[i] = el)}
+              onClick={() => goTo(i)}
+              role="tab"
+              aria-selected={i === current}
+              aria-label={`${e.label}, ${e.date}`}
+              className={`shrink-0 w-24 h-16 sm:w-28 sm:h-[4.5rem] rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                i === current
+                  ? "border-[var(--brutal-chip-border)] shadow-[3px_3px_0_0_var(--accent)] -translate-y-0.5"
+                  : "border-transparent opacity-60 hover:opacity-100 hover:border-[var(--brutal-chip-border)]"
+              }`}
+            >
+              <img loading="lazy" decoding="async" src={e.img} alt="" className="w-full h-full object-cover" draggable={false} />
+            </button>
+          ))}
         </div>
       </section>
     </FadeIn>

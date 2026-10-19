@@ -1,6 +1,14 @@
 // src/components/Hero.jsx
 import React, { useEffect, useState } from "react";
 import PauPhoto from "../assets/pauphoto.png";
+import resumePdf from "../assets/Resume/MapoyResume.pdf";
+
+// ── Your CV ───────────────────────────────────────
+// Points at the PDF in src/assets/Resume. To update your CV, replace that file
+// (same name). You can also paste a view-only link here instead (opens in a new tab).
+const CV_LINK = resumePdf;
+const cvIsExternal = CV_LINK.startsWith("http");
+// ──────────────────────────────────────────────────
 
 export default function Hero() {
   const [text, setText] = useState("");
@@ -39,30 +47,27 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-20 sm:pb-28 md:pb-36 relative overflow-hidden"
-      style={{
-        background: "linear-gradient(180deg, #fed7e2 0%, #fef2f7 40%, #ffffff 100%)",
-      }}
+      className="pt-10 sm:pt-14 lg:pt-20 pb-12 sm:pb-14 xl:pb-24 relative overflow-hidden bg-gradient-to-b from-[#fed7e2] via-[#fef2f7] to-white dark:from-[#3a1230] dark:via-[#1c0e1c] dark:to-[var(--page-bg)]"
     >
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8 sm:gap-10 lg:gap-16 px-4 sm:px-6">
+      <div className="section-container flex flex-col xl:flex-row items-center gap-10 xl:gap-14">
         {/* Text side */}
-        <div className="lg:w-1/2 text-center lg:text-left space-y-4 sm:space-y-6">
+        <div className="@container w-full xl:flex-1 min-w-0 text-center xl:text-left space-y-4 sm:space-y-6">
           <h1
-            style={{ color: "#ec4899" }}
-            className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 leading-tight tracking-tight pt-6 sm:pt-8 md:pt-4"
+            style={{ color: "var(--accent-ink)" }}
+            className="text-[min(3.75rem,8cqw)] whitespace-nowrap font-black mb-4 leading-tight tracking-tight pt-6 sm:pt-8 md:pt-4"
           >
             <span className="inline-block">
               {text}
-              <span className="animate-pulse ml-2" style={{ color: "#ec4899" }}>|</span>
+              <span className="animate-pulse ml-2" style={{ color: "var(--accent-ink)" }}>|</span>
             </span>
           </h1>
 
           <p
-            className="text-lg sm:text-xl text-gray-800 mb-6 max-w-md sm:max-w-lg mx-auto lg:mx-0 leading-relaxed"
+            className="text-lg sm:text-xl text-gray-800 dark:text-gray-200 mb-6 max-w-md sm:max-w-lg mx-auto xl:mx-0 leading-relaxed"
             style={{ textShadow: "0 2px 8px rgba(236, 72, 153, 0.15)" }}
           >
             A{" "}
-            <span className="font-medium">21‑year‑old IT student</span>{" "}
+            <span className="font-medium">22‑year‑old IT student</span>{" "}
             at FEU Institute of Technology with a specialization in{" "}
             <span className="font-medium">Web and Mobile Applications</span>. When I'm not coding, you'll find me doing{" "}
             <span className="font-medium">special effects makeup</span>,{" "}
@@ -70,36 +75,58 @@ export default function Hero() {
             <span className="font-medium">lending my voice to characters</span>. I'm always up for creating something awesome, so let's make it happen!
           </p>
 
-          {/* Buttons — fixed width so they don't stretch */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 items-center lg:items-start sm:justify-center lg:justify-start">
-            <button
-              onClick={() => scrollTo("about-me")}
-              className="w-40 px-5 py-2.5 text-sm sm:text-base rounded-xl font-semibold text-white bg-[#ec4899] border-2 border-[#ec4899] shadow-lg hover:scale-105 transition-transform duration-300"
-            >
-              About Me
-            </button>
+          {/* Quick stats: typographic, no boxes, so the buttons below stay the only "chunky" row */}
+          <ul className="flex justify-center xl:justify-start divide-x-2 divide-gray-200 dark:divide-white/15">
+            {[
+              { value: "3", label: "Certifications" },
+              { value: "2", label: "Internships" },
+              { value: "2", label: "Hackathon wins" },
+            ].map((s) => (
+              <li key={s.label} className="px-4 sm:px-6 first:pl-0 last:pr-0 text-center xl:text-left">
+                <span className="block text-3xl sm:text-4xl font-black leading-none text-[var(--accent-ink)]">{s.value}</span>
+                <span className="block mt-1.5 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                  {s.label}
+                </span>
+              </li>
+            ))}
+          </ul>
 
+          {/* Buttons — fixed width so they don't stretch */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-2 items-center xl:items-start sm:justify-center xl:justify-start">
             <button
               onClick={() => scrollTo("certifications")}
-              className="w-40 px-5 py-2.5 text-sm sm:text-base rounded-xl font-semibold text-[#ec4899] bg-white border-2 border-[#ec4899] shadow-lg hover:scale-105 transition-transform duration-300"
+              className="brutal-btn min-w-40 whitespace-nowrap px-5 py-2.5 text-sm sm:text-base font-black text-white bg-[var(--accent)]"
             >
               Credentials
             </button>
+
+            {/* External link opens in a new tab; a PDF in /public downloads directly */}
+            <a
+              href={CV_LINK}
+              {...(cvIsExternal ? { target: "_blank", rel: "noopener noreferrer" } : { download: "Pauline-Mapoy-Resume.pdf" })}
+              className="brutal-btn brutal-mint min-w-40 whitespace-nowrap px-5 py-2.5 text-sm sm:text-base font-black text-gray-900 dark:text-white bg-[var(--brutal-chip-bg)] inline-flex items-center justify-center gap-2"
+            >
+              {cvIsExternal ? "View CV" : "Download CV"}
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+            </a>
           </div>
+
         </div>
 
         {/* Photo side */}
-        <div className="lg:w-1/2 flex justify-center">
+        <div className="xl:shrink-0 flex justify-center">
           <img
             src={PauPhoto}
             alt="Pau"
-            className="w-72 sm:w-80 md:w-[360px] lg:w-[480px] h-72 sm:h-80 md:h-[360px] lg:h-[480px] rounded-none object-cover hover:scale-105 transition-transform duration-500"
+            className="w-72 sm:w-80 md:w-[360px] xl:w-[400px] h-72 sm:h-80 md:h-[360px] xl:h-[400px] rounded-none object-cover hover:scale-105 transition-transform duration-500"
           />
         </div>
       </div>
 
       {/* Animated scroll arrow */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-70">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden xl:flex flex-col items-center gap-1 opacity-70">
         <span className="text-xs text-pink-400 font-medium tracking-widest uppercase">scroll</span>
         <div className="flex flex-col items-center gap-0.5">
           <svg

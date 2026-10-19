@@ -1,19 +1,21 @@
 // src/components/Footer.jsx
-import React from "react";
+import React, { useState } from "react";
+
+const EMAIL = "paulinemapoyph@gmail.com";
 
 export default function Footer() {
-  function scrollTo(id) {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
   }
 
-  const links = [
-    { label: "About",       id: "about-me" },
-    { label: "Credentials", id: "certifications" },
-    { label: "Skills",      id: "skills" },
-    { label: "Content",     id: "content" },
-    { label: "Socials",     id: "socials" },
-  ];
 
   const socials = [
     {
@@ -35,15 +37,6 @@ export default function Footer() {
       ),
     },
     {
-      label: "TikTok",
-      url: "https://www.tiktok.com/@paulinemapoy_",
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 448 512">
-          <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z" />
-        </svg>
-      ),
-    },
-    {
       label: "LinkedIn",
       url: "https://www.linkedin.com/in/paulinemapoy/",
       icon: (
@@ -55,53 +48,39 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ backgroundColor: "#111" }} className="text-white">
-      {/* Pink gradient top strip */}
-      <div className="h-1 bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500" />
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-10">
-
-          {/* Col 1 — name & short bio */}
-          <div className="sm:col-span-1">
-            <h2 className="text-lg font-bold text-white mb-2">Pauline Erika Mapoy</h2>
-            <p className="text-xs text-white/50 leading-relaxed">
-              IT student building this space as a personal portfolio.
+    <footer className="border-t-[3px] border-[var(--brutal-border)]">
+      <div className="section-container py-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+          {/* Name + one-line hello + email */}
+          <div>
+            <p className="text-xl font-black uppercase tracking-tight text-gray-900 dark:text-white">Pauline Mapoy</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Let's make something <span className="font-bold text-[var(--accent-ink)]">awesome</span>.
             </p>
+            <div className="flex items-center gap-2 mt-3">
+              <a
+                href={`mailto:${EMAIL}`}
+                className="text-sm font-bold text-gray-900 dark:text-white underline decoration-[var(--accent-ink)] decoration-2 underline-offset-4 hover:text-[var(--accent-ink)] transition-colors break-all"
+              >
+                {EMAIL}
+              </a>
+              <button
+                onClick={copyEmail}
+                aria-label="Copy email address"
+                title={copied ? "Copied!" : "Copy email"}
+                className="brutal-chip !rounded-lg w-8 h-8 shrink-0 flex items-center justify-center text-gray-900 dark:text-white"
+              >
+                {copied ? (
+                  <svg className="w-4 h-4 text-[var(--accent-ink)]" fill="none" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25" /></svg>
+                )}
+              </button>
+            </div>
           </div>
 
-          {/* Col 2 — nav */}
-          <div>
-            <p className="text-xs font-bold tracking-widest uppercase text-pink-400 mb-3">Navigate</p>
-            <ul className="space-y-2">
-              {links.map((l) => (
-                <li key={l.id}>
-                  <button
-                    onClick={() => scrollTo(l.id)}
-                    className="text-sm text-white/60 hover:text-white transition-colors duration-200"
-                  >
-                    {l.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 3 — reach out (no location) */}
-          <div>
-            <p className="text-xs font-bold tracking-widest uppercase text-pink-400 mb-3">Reach Out</p>
-            <a
-              href="mailto:erikaaamapoy@gmail.com"
-              className="text-sm text-white/60 hover:text-white transition-colors duration-200 block"
-            >
-              erikaaamapoy@gmail.com
-            </a>
-          </div>
-        </div>
-
-        {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+          {/* Socials + back to top */}
+          <div className="flex items-center gap-3">
             {socials.map((s) => (
               <a
                 key={s.label}
@@ -109,16 +88,25 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="text-white/40 hover:text-pink-400 transition-colors duration-200"
+                className="brutal-btn [--brutal-btn-shadow:var(--brutal-shadow)] w-11 h-11 flex items-center justify-center bg-[var(--brutal-chip-bg)] text-gray-900 dark:text-white hover:text-[var(--accent-ink)]"
               >
                 {s.icon}
               </a>
             ))}
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Back to top"
+              title="Back to top"
+              className="brutal-btn w-11 h-11 flex items-center justify-center bg-[var(--accent)] text-white"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>
+            </button>
           </div>
-          <p className="text-xs text-white/30">
-            © {new Date().getFullYear()} Pauline Erika Mapoy · Designed & developed by yours truly
-          </p>
         </div>
+
+        <p className="mt-8 pt-5 border-t-2 border-gray-100 dark:border-white/10 text-xs text-gray-400 dark:text-gray-500">
+          © {new Date().getFullYear()} Pauline Erika Mapoy
+        </p>
       </div>
     </footer>
   );

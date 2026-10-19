@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Original certificates (unblurred signatures) stay on this computer only;
+# only the blurred previews are committed and published
+src/assets/Certificates/*
+!src/assets/Certificates/previews/

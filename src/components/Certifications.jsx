@@ -1,6 +1,8 @@
 // src/components/Certifications.jsx
-import React from "react";
+import React, { useCallback, useState } from "react";
 import FadeIn from "./FadeIn";
+import SectionHeader from "./SectionHeader";
+import CertificateViewer from "./CertificateViewer";
 
 import Cisco1 from "../assets/badges/cisco1.png";
 import Cisco2 from "../assets/badges/cisco2.png";
@@ -10,10 +12,18 @@ import PMI from "../assets/badges/PMI.png";
 import Python from "../assets/badges/Python.png";
 import Lifetime from "../assets/badges/Lifetime.png";
 
+// Full certificates (signatures blurred) for the "View certificate" popup
+import pmiCert from "../assets/Certificates/previews/pmi.jpg";
+import ccstCert from "../assets/Certificates/previews/ccst.jpg";
+import pythonCert from "../assets/Certificates/previews/python-cert.jpg";
+import pmiThumb from "../assets/Certificates/previews/pmi-thumb.jpg";
+import ccstThumb from "../assets/Certificates/previews/ccst-thumb.jpg";
+import pythonThumb from "../assets/Certificates/previews/python-cert-thumb.jpg";
+
 const certifications = [
-  { name: "PMI Project Management Ready", issuer: "Project Management Institute", date: "3/16/2026", logo: PMI },
-  { name: "CCST Networking — Lifetime", issuer: "Cisco", date: "2/15/2025", logo: Lifetime },
-  { name: "IT Specialist — Python", issuer: "Certiport, a Pearson VUE business", date: "2/12/2025", logo: Python },
+  { name: "PMI Project Management Ready", issuer: "Project Management Institute", date: "3/16/2026", logo: PMI, full: pmiCert, thumb: pmiThumb },
+  { name: "CCST Networking — Lifetime", issuer: "Cisco", date: "2/15/2025", logo: Lifetime, full: ccstCert, thumb: ccstThumb },
+  { name: "IT Specialist — Python", issuer: "Certiport, a Pearson VUE business", date: "2/12/2025", logo: Python, full: pythonCert, thumb: pythonThumb },
 ];
 
 const badges = [
@@ -23,30 +33,39 @@ const badges = [
   { name: "DevNet Associate", issuer: "Cisco", date: "3/21/2026", logo: DevNet },
 ];
 
-function CertCard({ item }) {
+function CertCard({ item, onView }) {
   return (
-    <div className="relative bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 transition-all duration-300 hover:border-pink-200 hover:shadow-md hover:-translate-y-0.5 cursor-default group">
-      <div className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-pink-200 group-hover:bg-pink-400 transition-colors duration-300" />
-      <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0 p-1.5 ml-2">
-        <img src={item.logo} alt={item.name} className="w-full h-full object-contain" style={{ mixBlendMode: "multiply" }} />
-      </div>
-      <div className="min-w-0">
-        <p className="text-sm font-bold text-gray-900 leading-snug">{item.name}</p>
-        <p className="text-xs text-gray-500 mt-1">{item.issuer}</p>
-        <span className="inline-block mt-1.5 text-xs font-semibold text-pink-500 bg-pink-50 px-2 py-0.5 rounded-full border border-pink-100">
+    <button onClick={() => onView(item)} className="group w-full brutal-card brutal-hover p-5 flex flex-wrap @md:flex-nowrap items-center gap-4 text-left">
+      {/* White box + mix-blend-multiply keeps logo backgrounds clean in both themes */}
+      <span className="w-20 h-20 rounded-xl bg-white border-2 border-[var(--brutal-chip-border)] flex items-center justify-center flex-shrink-0 p-1.5">
+        <img loading="lazy" decoding="async" src={item.logo} alt={item.name} className="w-full h-full object-contain" style={{ mixBlendMode: "multiply" }} />
+      </span>
+      <span className="min-w-0 flex-1 block">
+        <span className="block text-sm font-black text-gray-900 dark:text-white leading-snug">{item.name}</span>
+        <span className="block text-xs text-gray-500 dark:text-gray-400 mt-1">{item.issuer}</span>
+        <span className="brutal-chip inline-block mt-2 text-[11px] font-bold text-white !bg-[var(--accent)] px-2 py-0.5">
           {item.date}
         </span>
-      </div>
-    </div>
+      </span>
+
+      {/* Certificate preview: click the card to open it full size */}
+      <span className="relative block shrink-0 w-full @md:w-28 @md:aspect-[4/3] rounded-lg overflow-hidden border-2 border-[var(--brutal-chip-border)] bg-white">
+        {/* Narrow card: whole certificate at its real shape. Wide card: small cropped thumbnail */}
+        <img src={item.thumb} alt="" loading="lazy" className="block w-full h-auto @md:h-full object-contain @md:object-cover group-hover:scale-105 transition-transform duration-300" />
+        <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-white text-[10px] font-black uppercase tracking-wider opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+          Preview ↗
+        </span>
+      </span>
+    </button>
   );
 }
 
 function BadgeCard({ item }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 transition-all duration-300 hover:border-pink-200 hover:shadow-md hover:-translate-y-0.5 cursor-default group">
+    <div className="brutal-card brutal-hover brutal-mint p-5 flex items-center gap-4">
       {/* White bg + mix-blend-multiply kills any black outline from PNG */}
-      <div className="relative w-16 h-16 rounded-2xl bg-white border border-rose-100/80 flex items-center justify-center flex-shrink-0 p-2 group-hover:border-pink-200 transition-colors duration-300">
-        <img
+      <div className="w-20 h-20 rounded-2xl bg-white border-2 border-[var(--brutal-chip-border)] flex items-center justify-center flex-shrink-0 p-2">
+        <img loading="lazy" decoding="async"
           src={item.logo}
           alt={item.name}
           className="w-full h-full object-contain"
@@ -54,9 +73,9 @@ function BadgeCard({ item }) {
         />
       </div>
       <div className="min-w-0">
-        <p className="text-sm font-bold text-gray-900 leading-snug">{item.name}</p>
-        <p className="text-xs text-gray-500 mt-1">{item.issuer}</p>
-        <span className="inline-block mt-1.5 text-xs font-semibold text-pink-500 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
+        <p className="text-sm font-black text-gray-900 dark:text-white leading-snug">{item.name}</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.issuer}</p>
+        <span className="brutal-chip inline-block mt-2 text-[11px] font-bold text-white !bg-[var(--accent)] px-2 py-0.5">
           {item.date}
         </span>
       </div>
@@ -65,46 +84,59 @@ function BadgeCard({ item }) {
 }
 
 export default function Certifications() {
+  const [viewing, setViewing] = useState(null);
+  const close = useCallback(() => setViewing(null), []);
+
   return (
     <FadeIn>
-      <section id="certifications" className="max-w-5xl mx-auto px-4 py-16 sm:py-20">
+      <section id="certifications" className="section-container py-16 sm:py-20">
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <p className="text-xs font-semibold tracking-widest uppercase text-pink-500 mb-2">
-            Credentials
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-2">
-            Certifications <span className="text-pink-500">&</span> badges
-          </h2>
-          <p className="text-sm text-gray-400">Proof of what I've put the hours into</p>
-        </div>
+        <SectionHeader
+          number="02"
+          eyebrow="Credentials"
+          title={<>Certifications <span className="text-pink-500">&</span> badges</>}
+          subtitle="Proof of what I've put the hours into"
+        />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           {/* Certifications */}
           <div>
-            <div className="flex items-center gap-2 mb-5">
-              <div className="h-px flex-1 bg-gray-100" />
-              <p className="text-xs font-bold tracking-widest uppercase text-gray-400 px-2">Certifications</p>
-              <div className="h-px flex-1 bg-gray-100" />
+            <div data-reveal className="flex items-center gap-2.5 mb-5">
+              <h3 className="text-lg font-black text-gray-900 dark:text-white">Certifications</h3>
+              <span className="min-w-6 h-6 px-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-black flex items-center justify-center tabular-nums">
+                {certifications.length}
+              </span>
             </div>
-            <div className="flex flex-col gap-3">
-              {certifications.map((item) => <CertCard key={item.name} item={item} />)}
+            <div className="flex flex-col gap-5">
+              {certifications.map((item) => (
+                <div key={item.name} className="@container">
+                  <CertCard item={item} onView={setViewing} />
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Badges */}
           <div>
-            <div className="flex items-center gap-2 mb-5">
-              <div className="h-px flex-1 bg-gray-100" />
-              <p className="text-xs font-bold tracking-widest uppercase text-gray-400 px-2">Badges</p>
-              <div className="h-px flex-1 bg-gray-100" />
+            <div data-reveal className="flex items-center gap-2.5 mb-5">
+              <h3 className="text-lg font-black text-gray-900 dark:text-white">Badges</h3>
+              <span className="min-w-6 h-6 px-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-black flex items-center justify-center tabular-nums">
+                {badges.length}
+              </span>
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-5">
               {badges.map((item) => <BadgeCard key={item.name} item={item} />)}
             </div>
           </div>
         </div>
+
+        {viewing && (
+          <CertificateViewer
+            entry={{ title: viewing.name, org: viewing.issuer, when: viewing.date, full: viewing.full }}
+            onClose={close}
+          />
+        )}
       </section>
     </FadeIn>
   );
