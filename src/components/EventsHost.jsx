@@ -108,7 +108,7 @@ export default function EventsHost() {
       <section id="onstage" className="section-container py-16 sm:py-20">
         {/* Header */}
         <SectionHeader
-          number="05"
+          number="06"
           eyebrow="On Stage"
           title={<>Mic Check, <span className="text-pink-500">It's Me!</span></>}
           subtitle="Hosting since 2023, from formal programs to high-energy celebrations."

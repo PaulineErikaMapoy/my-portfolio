@@ -1,33 +1,51 @@
 // src/components/CertificateViewer.jsx
-// Full-screen popup for viewing a certificate image (signatures already blurred in the previews)
-import React, { useEffect, useRef } from "react";
+// Full-screen popup for viewing a certificate image (signatures already blurred in the previews).
+// Fades + scales in on open, and plays the same animation in reverse before closing.
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+
+const CLOSE_MS = 220; // keep in sync with the viewer-out animations in index.css
 
 export default function CertificateViewer({ entry, onClose }) {
   const closeRef = useRef(null);
+  const timer = useRef(null);
+  const [closing, setClosing] = useState(false);
+
+  const requestClose = useCallback(() => {
+    if (timer.current) return;
+    setClosing(true);
+    timer.current = setTimeout(onClose, CLOSE_MS);
+  }, [onClose]);
 
   useEffect(() => {
     const { overflow } = document.body.style;
     document.body.style.overflow = "hidden";
     closeRef.current?.focus();
-    const onKey = (e) => e.key === "Escape" && onClose();
+    const onKey = (e) => e.key === "Escape" && requestClose();
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = overflow;
       window.removeEventListener("keydown", onKey);
     };
-  }, [onClose]);
+  }, [requestClose]);
 
-  // Rendered on <body> so the fade-in wrapper's transform can't trap the fixed overlay
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  // Rendered on <body> so no parent transform can trap the fixed overlay
   return createPortal(
     <div
-      className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
-      onClick={onClose}
+      data-closing={closing || undefined}
+      className="viewer-backdrop fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+      onClick={requestClose}
       role="dialog"
       aria-modal="true"
       aria-label={`${entry.title} certificate`}
     >
-      <div className="brutal-card w-full max-w-4xl max-h-full flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+      <div
+        data-closing={closing || undefined}
+        className="viewer-panel brutal-card w-full max-w-4xl max-h-full flex flex-col overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-start justify-between gap-4 p-4 sm:p-5 border-b-2 border-[var(--brutal-border)]">
           <div className="min-w-0">
             <p className="text-base sm:text-lg font-black text-gray-900 dark:text-white leading-snug">{entry.title}</p>
@@ -35,7 +53,7 @@ export default function CertificateViewer({ entry, onClose }) {
           </div>
           <button
             ref={closeRef}
-            onClick={onClose}
+            onClick={requestClose}
             aria-label="Close"
             className="brutal-btn w-10 h-10 shrink-0 flex items-center justify-center bg-[var(--brutal-chip-bg)] text-gray-900 dark:text-white hover:bg-pink-50 dark:hover:bg-pink-500/15"
           >

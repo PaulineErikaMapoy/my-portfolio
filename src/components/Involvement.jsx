@@ -91,7 +91,7 @@ export default function Involvement() {
     <FadeIn>
       <section id="involvement" className="section-container py-16 sm:py-20">
         <SectionHeader
-          number="04"
+          number="05"
           eyebrow="Involvement"
           title={<>Where I've <span className="text-pink-500">shown up</span></>}
           subtitle={`${orgCount} orgs, ${eventCount} events and seminars, since 2022. Tap any entry to see the proof.`}
@@ -119,7 +119,7 @@ export default function Involvement() {
                       {/* Vertical IDs keep their tall shape instead of being cropped into a wide box */}
                       {/* Narrow card: whole image at its real shape (tall IDs capped in height). Wide card: small cropped thumbnail */}
                       <span
-                        className={`flex justify-center shrink-0 rounded-lg overflow-hidden border-2 border-[var(--brutal-chip-border)] bg-white ${
+                        className={`relative flex justify-center shrink-0 rounded-lg overflow-hidden border-2 border-[var(--brutal-chip-border)] bg-white ${
                           entry.portrait ? "w-full @md:w-24 @md:aspect-[2/3]" : "w-full @md:w-32 @md:aspect-[4/3]"
                         }`}
                       >
@@ -131,13 +131,16 @@ export default function Involvement() {
                             entry.portrait ? "max-h-80 w-auto @md:max-h-none" : "w-full h-auto"
                           }`}
                         />
+                        {/* Hover hint, same as the Credentials cards */}
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-white text-[10px] font-black uppercase tracking-wider opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+                          Preview ↗
+                        </span>
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="brutal-tag inline-block bg-pink-50 dark:bg-pink-500/15 text-[var(--accent-ink)] text-[10px] font-black uppercase tracking-wider px-2 py-0.5 mb-2">
                           {entry.type}
                         </span>
                         <span className="block text-sm font-black text-gray-900 dark:text-white leading-snug">{entry.title}</span>
-                        <span className="block text-xs text-gray-500 dark:text-gray-400 mt-1">{entry.org}</span>
                         <span className="flex items-center justify-between gap-2 mt-2">
                           <span className="text-xs font-bold text-gray-700 dark:text-gray-300">{entry.when}</span>
                           <span className="text-xs font-black text-[var(--accent-ink)] whitespace-nowrap group-hover:translate-x-0.5 transition-transform">View ↗</span>

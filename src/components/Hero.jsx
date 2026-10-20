@@ -1,16 +1,17 @@
 // src/components/Hero.jsx
 import React, { useEffect, useState } from "react";
-import PauPhoto from "../assets/pauphoto.png";
-import resumePdf from "../assets/Resume/MapoyResume.pdf";
+import PauPhoto from "../assets/about/PauMainPortrait-web.jpg"; // web-sized copy of PauMainPortrait.jpg
+import PauHoverPhoto from "../assets/about/HoverPhoto-web.jpg"; // web-sized copy of HoverPhoto.jpg
 
-// ── Your CV ───────────────────────────────────────
-// Points at the PDF in src/assets/Resume. To update your CV, replace that file
-// (same name). You can also paste a view-only link here instead (opens in a new tab).
-const CV_LINK = resumePdf;
-const cvIsExternal = CV_LINK.startsWith("http");
+// ── Request CV ────────────────────────────────────
+// The CV isn't published; visitors email a request instead (opens their mail app, pre-filled).
+const CV_REQUEST = `mailto:paulinemapoyph@gmail.com?subject=${encodeURIComponent("CV request")}&body=${encodeURIComponent(
+  "Hi Pau,\n\nI came across your portfolio and would love to see your CV.\n\nName:\nCompany / organization:\nWhat it's for:\n\nThanks!"
+)}`;
 // ──────────────────────────────────────────────────
 
 export default function Hero() {
+  const [altPhoto, setAltPhoto] = useState(false);
   const [text, setText] = useState("");
   const fullText = "Kumusta? I'm Pau!";
   const [isDeleting, setIsDeleting] = useState(false);
@@ -102,13 +103,12 @@ export default function Hero() {
 
             {/* External link opens in a new tab; a PDF in /public downloads directly */}
             <a
-              href={CV_LINK}
-              {...(cvIsExternal ? { target: "_blank", rel: "noopener noreferrer" } : { download: "Pauline-Mapoy-Resume.pdf" })}
+              href={CV_REQUEST}
               className="brutal-btn brutal-mint min-w-40 whitespace-nowrap px-5 py-2.5 text-sm sm:text-base font-black text-gray-900 dark:text-white bg-[var(--brutal-chip-bg)] inline-flex items-center justify-center gap-2"
             >
-              {cvIsExternal ? "View CV" : "Download CV"}
+              Request CV
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
               </svg>
             </a>
           </div>
@@ -116,12 +116,50 @@ export default function Hero() {
         </div>
 
         {/* Photo side */}
-        <div className="xl:shrink-0 flex justify-center">
-          <img
-            src={PauPhoto}
-            alt="Pau"
-            className="w-72 sm:w-80 md:w-[360px] xl:w-[400px] h-72 sm:h-80 md:h-[360px] xl:h-[400px] rounded-none object-cover hover:scale-105 transition-transform duration-500"
-          />
+        <div className="xl:shrink-0 flex justify-center px-6 sm:px-10">
+          <div className="relative">
+            {/* Framed portrait: same outline + hard pink shadow as the cards */}
+            {/* Hover (or tap on phones) crossfades to the second photo */}
+            <button
+              type="button"
+              // Tap toggles on touch screens; on a computer the hover does the swap
+              onClick={() => window.matchMedia("(hover: none)").matches && setAltPhoto((a) => !a)}
+              aria-label="Show another photo of Pau"
+              aria-pressed={altPhoto}
+              className="group/photo block brutal-card [--brutal-offset:10px] relative overflow-hidden w-60 sm:w-72 md:w-80 xl:w-[340px] aspect-[4/5]"
+            >
+              <img
+                src={PauPhoto}
+                alt="Pauline Mapoy"
+                className={`absolute inset-0 w-full h-full object-cover object-top transition-[opacity,scale] duration-500 ease-out group-hover/photo:scale-105 ${
+                  altPhoto ? "!opacity-0" : "group-hover/photo:!opacity-0"
+                }`}
+              />
+              <img
+                src={PauHoverPhoto}
+                alt=""
+                className={`absolute inset-0 w-full h-full object-cover object-top transition-[opacity,scale] duration-500 ease-out group-hover/photo:scale-105 ${
+                  altPhoto ? "!opacity-100" : "!opacity-0 group-hover/photo:!opacity-100"
+                }`}
+              />
+            </button>
+
+            {/* Role tags around the photo */}
+            {[
+              { label: "Developer",     pos: "top-[14%] -left-6 sm:-left-10 -rotate-6" },
+              { label: "Makeup Artist", pos: "top-[6%] -right-5 sm:-right-9 rotate-3" },
+              { label: "Voice Actor",   pos: "top-[52%] -right-6 sm:-right-10 -rotate-3" },
+              { label: "Events Host",   pos: "bottom-[10%] -left-5 sm:-left-9 rotate-3" },
+              { label: "President's Scholar", pos: "-bottom-4 -right-4 sm:-right-8 -rotate-2" },
+            ].map((t) => (
+              <span
+                key={t.label}
+                className={`brutal-tag absolute ${t.pos} bg-[var(--brutal-chip-bg)] text-[var(--accent-ink)] text-[11px] sm:text-xs font-black px-2.5 py-1 whitespace-nowrap`}
+              >
+                {t.label}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

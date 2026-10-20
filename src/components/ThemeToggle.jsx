@@ -28,7 +28,6 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
 
   useEffect(() => () => clearTimeout(hideTimer.current), []);
@@ -36,6 +35,12 @@ export default function ThemeToggle() {
   function toggle() {
     const next = !dark;
     setDark(next);
+    // Remember only a theme the visitor picked themselves (light is the default)
+    try {
+      localStorage.setItem("theme-choice", next ? "dark" : "light");
+    } catch {
+      /* storage blocked: the switch still works for this visit */
+    }
 
     // Pick a random line, never the same one twice in a row
     const options = quips[next ? "dark" : "light"].filter((q) => q !== lastQuip.current);

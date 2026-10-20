@@ -30,3 +30,6 @@ dist-ssr
 # only the blurred previews are committed and published
 src/assets/Certificates/*
 !src/assets/Certificates/previews/
+
+# Resume stays private (visitors use "Request CV" instead)
+src/assets/Resume/

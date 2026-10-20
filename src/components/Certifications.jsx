@@ -93,7 +93,7 @@ export default function Certifications() {
 
         {/* Header */}
         <SectionHeader
-          number="02"
+          number="03"
           eyebrow="Credentials"
           title={<>Certifications <span className="text-pink-500">&</span> badges</>}
           subtitle="Proof of what I've put the hours into"

@@ -72,7 +72,7 @@ export default function Skills() {
 
         {/* Header */}
         <SectionHeader
-          number="03"
+          number="04"
           eyebrow="Skills"
           title={<>What I bring <span className="text-pink-500">to the table</span></>}
           subtitle="Tech edition"
