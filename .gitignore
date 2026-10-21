@@ -37,3 +37,6 @@ src/assets/Resume/
 # Full-size project originals stay local; the site uses the web-sized copies in Projects/web
 src/assets/Projects/*.png
 src/assets/Projects/CashTrack/
+
+# Full-size originals of site images (the site uses optimized .webp copies)
+image-originals/

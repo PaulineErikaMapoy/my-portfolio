@@ -7,10 +7,10 @@ import SectionHeader from "./SectionHeader";
 import CertificateViewer from "./CertificateViewer";
 
 // Web-sized copies of the photos in assets/Hackathon
-import sikaptala from "../assets/Hackathon/web/sikaptala.jpg";
-import technopreneurship from "../assets/Hackathon/web/technopreneurship.jpg";
-import edtekcon from "../assets/Hackathon/web/edtekcon.jpg";
-import designThinking from "../assets/Hackathon/web/design-thinking.jpg";
+import sikaptala from "../assets/Hackathon/web/sikaptala.webp";
+import technopreneurship from "../assets/Hackathon/web/technopreneurship.webp";
+import edtekcon from "../assets/Hackathon/web/edtekcon.webp";
+import designThinking from "../assets/Hackathon/web/design-thinking.webp";
 
 // ── Edit your hackathons here ─────────────────────
 const wins = [

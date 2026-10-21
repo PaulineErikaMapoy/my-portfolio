@@ -13,9 +13,9 @@ import Python from "../assets/badges/Python.png";
 import Lifetime from "../assets/badges/Lifetime.png";
 
 // Full certificates (signatures blurred) for the "View certificate" popup
-import pmiCert from "../assets/Certificates/previews/pmi.jpg";
+import pmiCert from "../assets/Certificates/previews/pmi.webp";
 import ccstCert from "../assets/Certificates/previews/ccst.jpg";
-import pythonCert from "../assets/Certificates/previews/python-cert.jpg";
+import pythonCert from "../assets/Certificates/previews/python-cert.webp";
 import pmiThumb from "../assets/Certificates/previews/pmi-thumb.jpg";
 import ccstThumb from "../assets/Certificates/previews/ccst-thumb.jpg";
 import pythonThumb from "../assets/Certificates/previews/python-cert-thumb.jpg";

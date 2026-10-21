@@ -3,10 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import FadeIn from "./FadeIn";
 import SectionHeader from "./SectionHeader";
 // Feed photos (web-sized copies of the originals in assets/SocMed)
-import socmed1 from "../assets/SocMed/web/socmed1.jpg"; // profile photo
-import socmed2 from "../assets/SocMed/web/socmed2.jpg";
-import socmed3 from "../assets/SocMed/web/socmed3.jpg";
-import socmed4 from "../assets/SocMed/web/socmed4.jpg";
+import socmed1 from "../assets/SocMed/web/socmed1.webp"; // profile photo
+import socmed2 from "../assets/SocMed/web/socmed2.webp";
+import socmed3 from "../assets/SocMed/web/socmed3.webp";
+import socmed4 from "../assets/SocMed/web/socmed4.webp";
 
 const socials = [
   {

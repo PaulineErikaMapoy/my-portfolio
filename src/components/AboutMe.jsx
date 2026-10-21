@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import FadeIn from "./FadeIn";
 import SectionHeader from "./SectionHeader";
-import pauPortrait from "../assets/about/pau_portrait.png";
-import pauPortrait2 from "../assets/about/pau_portrait2.png";
+import pauPortrait from "../assets/about/pau_portrait.webp";
+import pauPortrait2 from "../assets/about/pau_portrait2.webp";
 import pauPortrait3 from "../assets/about/pau_portrait3.png";
 
 const portraits = [pauPortrait, pauPortrait2, pauPortrait3];

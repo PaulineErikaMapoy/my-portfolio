@@ -131,6 +131,7 @@ export default function Hero() {
               <img
                 src={PauPhoto}
                 alt="Pauline Mapoy"
+                fetchPriority="high" // first thing visitors see, so download it before anything else
                 className={`absolute inset-0 w-full h-full object-cover object-top transition-[opacity,scale] duration-500 ease-out group-hover/photo:scale-105 ${
                   altPhoto ? "!opacity-0" : "group-hover/photo:!opacity-0"
                 }`}

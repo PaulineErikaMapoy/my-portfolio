@@ -57,13 +57,13 @@ function PosterStack({ project, index, onOpen }) {
   const [front, ...back] = project.posters;
   const mint = project.accent === "mint";
   return (
-    <div className="relative mx-auto w-full max-w-[340px] sm:max-w-[380px] pt-4 pb-6 px-4">
+    <div className="relative mx-auto w-full max-w-[300px] sm:max-w-[380px] pt-4 pb-6 px-6 sm:px-4">
       {/* Paper behind: the second poster if there is one, otherwise a solid accent sheet */}
       {back[0] ? (
         <button
           onClick={() => onOpen(back[0])}
           aria-label={`Open ${project.name} ${back[0].label.toLowerCase()}`}
-          className="group absolute inset-x-4 top-4 bottom-6 rotate-[5deg] translate-x-5 hover:translate-x-8 hover:rotate-[7deg] transition-transform duration-300"
+          className="group absolute inset-x-6 sm:inset-x-4 top-4 bottom-6 rotate-3 translate-x-2 sm:rotate-[5deg] sm:translate-x-5 hover:translate-x-8 hover:rotate-[7deg] transition-transform duration-300"
         >
           <span className="brutal-card block w-full h-full overflow-hidden [--brutal-offset:6px]">
             <img src={back[0].src} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover object-top" />
@@ -72,7 +72,7 @@ function PosterStack({ project, index, onOpen }) {
       ) : (
         <span
           aria-hidden="true"
-          className={`absolute inset-x-4 top-4 bottom-6 rotate-[5deg] translate-x-5 rounded-2xl border-[3px] border-[var(--brutal-border)] ${mint ? "bg-[var(--mint)]" : "bg-[var(--accent)]"}`}
+          className={`absolute inset-x-6 sm:inset-x-4 top-4 bottom-6 rotate-3 translate-x-2 sm:rotate-[5deg] sm:translate-x-5 rounded-2xl border-[3px] border-[var(--brutal-border)] ${mint ? "bg-[var(--mint)]" : "bg-[var(--accent)]"}`}
         />
       )}
 

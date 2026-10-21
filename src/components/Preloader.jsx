@@ -4,7 +4,7 @@
 // middle and grows to reveal the site.
 import React, { useEffect, useState } from "react";
 
-const greetings = ["Bonjour", "Ciao", "Olá", "こんにちは", "안녕하세요", "Hola", "Hello"];
+const greetings = ["Bonjour", "Hallo", "Ciao", "Olá", "你好", "こんにちは", "안녕하세요", "नमस्ते", "مرحبا", "Xin chào", "Hola", "Hello"];
 
 const IRIS_MS = 900;  // keep in sync with the iris-open animation in index.css
 const INTRO = ", I'm Pau!";

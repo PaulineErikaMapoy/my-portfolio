@@ -3,25 +3,25 @@ import React from "react";
 import FadeIn from "./FadeIn";
 import SectionHeader from "./SectionHeader";
 
-import phpIcon from "../assets/skills/php.png";
-import pythonIcon from "../assets/skills/python.png";
-import javaIcon from "../assets/skills/java.png";
-import cppIcon from "../assets/skills/cpp.png";
-import kotlinIcon from "../assets/skills/kotlin.png";
-import htmlIcon from "../assets/skills/html.png";
-import cssIcon from "../assets/skills/css.png";
-import tailwindIcon from "../assets/skills/tailwindcss.png";
-import javascriptIcon from "../assets/skills/javascript.png";
-import reactIcon from "../assets/skills/react.png";
-import codeigniterIcon from "../assets/skills/codeigniter.png";
-import vscodeIcon from "../assets/skills/vscode.png";
-import xcodeIcon from "../assets/skills/xcode.png";
-import packetTracerIcon from "../assets/skills/packettracer.png";
-import androidStudioIcon from "../assets/skills/androidstudio.png";
-import photoshopIcon from "../assets/skills/ps.png";
-import illustratorIcon from "../assets/skills/ai.png";
-import figmaIcon from "../assets/skills/figma.png";
-import canvaIcon from "../assets/skills/canva.png";
+import phpIcon from "../assets/skills/php.webp";
+import pythonIcon from "../assets/skills/python.webp";
+import javaIcon from "../assets/skills/java.webp";
+import cppIcon from "../assets/skills/cpp.webp";
+import kotlinIcon from "../assets/skills/kotlin.webp";
+import htmlIcon from "../assets/skills/html.webp";
+import cssIcon from "../assets/skills/css.webp";
+import tailwindIcon from "../assets/skills/tailwindcss.webp";
+import javascriptIcon from "../assets/skills/javascript.webp";
+import reactIcon from "../assets/skills/react.webp";
+import codeigniterIcon from "../assets/skills/codeigniter.webp";
+import vscodeIcon from "../assets/skills/vscode.webp";
+import xcodeIcon from "../assets/skills/xcode.webp";
+import packetTracerIcon from "../assets/skills/packettracer.webp";
+import androidStudioIcon from "../assets/skills/androidstudio.webp";
+import photoshopIcon from "../assets/skills/ps.webp";
+import illustratorIcon from "../assets/skills/ai.webp";
+import figmaIcon from "../assets/skills/figma.webp";
+import canvaIcon from "../assets/skills/canva.webp";
 
 const skillGroups = [
   {

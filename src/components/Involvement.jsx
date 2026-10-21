@@ -8,33 +8,33 @@ import SectionHeader from "./SectionHeader";
 // Small previews for the timeline, larger previews for the viewer.
 // Signatures are blurred in these previews; the original files are never published.
 import ticapThumb from "../assets/Certificates/previews/ticap-thumb.jpg";
-import ticapFull from "../assets/Certificates/previews/ticap.jpg";
+import ticapFull from "../assets/Certificates/previews/ticap.webp";
 import devconThumb from "../assets/Certificates/previews/devcon-thumb.jpg";
-import devconFull from "../assets/Certificates/previews/devcon.jpg";
+import devconFull from "../assets/Certificates/previews/devcon.webp";
 import aitsThumb from "../assets/Certificates/previews/aits-thumb.jpg";
-import aitsFull from "../assets/Certificates/previews/aits.jpg";
+import aitsFull from "../assets/Certificates/previews/aits.webp";
 import jpcsThumb from "../assets/Certificates/previews/jpcs-thumb.jpg";
-import jpcsFull from "../assets/Certificates/previews/jpcs.jpg";
+import jpcsFull from "../assets/Certificates/previews/jpcs.webp";
 import tambayanThumb from "../assets/Certificates/previews/tambayantv-thumb.jpg";
-import tambayanFull from "../assets/Certificates/previews/tambayantv.jpg";
+import tambayanFull from "../assets/Certificates/previews/tambayantv.webp";
 import acmThumb from "../assets/Certificates/previews/acm-thumb.jpg";
-import acmFull from "../assets/Certificates/previews/acm.jpg";
+import acmFull from "../assets/Certificates/previews/acm.webp";
 import freshmenThumb from "../assets/Certificates/previews/freshmen-society-thumb.jpg";
-import freshmenFull from "../assets/Certificates/previews/freshmen-society.jpg";
+import freshmenFull from "../assets/Certificates/previews/freshmen-society.webp";
 import teamsThumb from "../assets/Certificates/previews/teams-thumb.jpg";
-import teamsFull from "../assets/Certificates/previews/teams.jpg";
+import teamsFull from "../assets/Certificates/previews/teams.webp";
 import stemThumb from "../assets/Certificates/previews/stem-at-work-thumb.jpg";
-import stemFull from "../assets/Certificates/previews/stem-at-work.jpg";
+import stemFull from "../assets/Certificates/previews/stem-at-work.webp";
 import edtekconThumb from "../assets/Certificates/previews/edtekcon-hackathon-thumb.jpg";
-import edtekconFull from "../assets/Certificates/previews/edtekcon-hackathon.jpg";
+import edtekconFull from "../assets/Certificates/previews/edtekcon-hackathon.webp";
 import ctrlZThumb from "../assets/Certificates/previews/jpcs-ctrl-z-thumb.jpg";
-import ctrlZFull from "../assets/Certificates/previews/jpcs-ctrl-z.jpg";
+import ctrlZFull from "../assets/Certificates/previews/jpcs-ctrl-z.webp";
 import decryptThumb from "../assets/Certificates/previews/jpcs-decrypt-decode-thumb.jpg";
-import decryptFull from "../assets/Certificates/previews/jpcs-decrypt-decode.jpg";
+import decryptFull from "../assets/Certificates/previews/jpcs-decrypt-decode.webp";
 import rebootMapThumb from "../assets/Certificates/previews/jpcs-reboot-map-thumb.jpg";
-import rebootMapFull from "../assets/Certificates/previews/jpcs-reboot-map.jpg";
+import rebootMapFull from "../assets/Certificates/previews/jpcs-reboot-map.webp";
 import itamReadyThumb from "../assets/Certificates/previews/itamready-drrm-thumb.jpg";
-import itamReadyFull from "../assets/Certificates/previews/itamready-drrm.jpg";
+import itamReadyFull from "../assets/Certificates/previews/itamready-drrm.webp";
 
 // Newest year first; entries within a year newest first
 const timeline = [
