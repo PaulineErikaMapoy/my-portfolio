@@ -152,6 +152,49 @@ body {
   background-image: radial-gradient(rgba(240, 122, 178, 0.11) 1.2px, transparent 1.2px);
 }
 
+/* Turquoise accent: everything inside swaps pink for turquoise, so a section uses one
+   accent only. .accent-mint changes just the colors; .band-mint adds the mint dotted background */
+.accent-mint, .band-mint {
+  --accent: #0d9488;
+  --accent-ink: #0f766e;
+  --brutal-shadow: #14b8a6;
+}
+.dark .accent-mint, .dark .band-mint {
+  --accent: #14b8a6;
+  --accent-ink: #5eead4;
+  --brutal-shadow: #2dd4bf;
+  --brutal-border: #2dd4bf;
+  --brutal-chip-shadow: #2dd4bf;
+  --brutal-btn-shadow: #2dd4bf;
+}
+.band-mint {
+  background-color: #ecfdf9;
+  background-image: radial-gradient(rgba(13, 148, 136, 0.2) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+.dark .band-mint {
+  background-color: #0b1918;
+  background-image: radial-gradient(rgba(94, 234, 212, 0.12) 1.2px, transparent 1.2px);
+}
+
+/* Small pink plus marks (Projects); follows light and dark mode */
+.band-plus {
+  background-color: #fff7fb;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M16 11v10M11 16h10' stroke='%23ec4899' stroke-opacity='0.15' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.dark .band-plus {
+  background-color: #150d17;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M16 11v10M11 16h10' stroke='%23f07ab2' stroke-opacity='0.08' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Slide fades in when flipping */
+.deck-slide { animation: deck-in 0.35s ease-out; }
+@keyframes deck-in { from { opacity: 0.2; transform: scale(1.015); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-slide { animation: none; }
+}
+
 /* Keep section headings clear of the mobile top bar when jumping to them */
 section[id] {
   scroll-margin-top: 5rem;
@@ -172,6 +215,27 @@ section[id] {
   justify-content: center;
   background: #0b0b0f;
   color: #fff;
+  transition: background-color 2s cubic-bezier(0.45, 0, 0.25, 1);
+}
+/* While "I'm Pau!" types, the screen slowly fades to pink */
+.preloader--pau {
+  background-color: #ec4899;
+}
+.preloader-pau {
+  white-space: pre;
+}
+/* Blinking typing cursor */
+.preloader-caret {
+  display: inline-block;
+  width: 3px;
+  height: 0.9em;
+  margin-left: 3px;
+  vertical-align: -0.08em;
+  background: currentColor;
+  animation: preloader-caret 0.9s steps(1) infinite;
+}
+@keyframes preloader-caret {
+  50% { opacity: 0; }
 }
 
 /* Cartoon iris: a hole in the black screen starts as a small circle in the middle,
@@ -184,17 +248,17 @@ section[id] {
 .preloader--opening {
   -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--iris), #000 calc(var(--iris) + 1px));
   mask: radial-gradient(circle at 50% 50%, transparent var(--iris), #000 calc(var(--iris) + 1px));
-  animation: iris-open 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  animation: iris-open 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 @keyframes iris-open {
   0%   { --iris: 0px; }
-  22%  { --iris: 70px; }
-  42%  { --iris: 60px; }
+  18%  { --iris: 64px; }
+  30%  { --iris: 56px; }
   100% { --iris: 150vmax; }
 }
 
 .preloader-word {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.25rem, 8vw, 4.5rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   animation: preloader-fade 0.8s ease 0.2s backwards;
@@ -220,6 +284,78 @@ section[id] {
 .pet-eye { transform-box: fill-box; transform-origin: center; animation: pet-blink 4s infinite; }
 .pet-body:hover .pet-head { transform-origin: 50% 100%; animation: pet-look 1.2s ease-in-out infinite; }
 .pet-heart { animation: pet-heart 1.1s ease-out forwards; }
+/* Speech bubble: centered over the pet, or lined up with the screen edge when the pet is near one */
+.pet-say { position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); pointer-events: none; }
+.walking-pet[data-edge="left"] .pet-say { left: 0; transform: none; }
+.walking-pet[data-edge="right"] .pet-say { left: auto; right: 0; transform: none; }
+.pet-say-bubble {
+  position: relative; display: block; width: max-content; max-width: 190px;
+  padding: 0.375rem 0.625rem; background: #fff; color: #111;
+  font-size: 12px; font-weight: 800; line-height: 1.3;
+  transform-origin: bottom center; animation: pet-say ease-out forwards;
+}
+/* Little tail pointing down at the pet */
+.pet-say-bubble::after {
+  content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px;
+  border: 6px solid transparent; border-top-color: #111;
+}
+.walking-pet[data-edge="left"] .pet-say-bubble::after { left: 34px; }
+.walking-pet[data-edge="right"] .pet-say-bubble::after { left: auto; right: 28px; }
+@keyframes pet-say {
+  0% { opacity: 0; transform: translateY(6px) scale(0.7); }
+  6% { opacity: 1; transform: translateY(0) scale(1.06); }
+  10% { transform: scale(1); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+/* On touch screens the pet can wander over buttons, so taps go straight through it
+   to whatever is underneath (petting it is a mouse-only treat) */
+@media (hover: none) {
+  .walking-pet, .walking-pet * { pointer-events: none; }
+}
+
+/* Collar charm swings a little while walking */
+.pet-charm { transform-box: fill-box; transform-origin: 50% 0%; }
+.pet--walking .pet-charm { animation: pet-charm 0.5s ease-in-out infinite; }
+@keyframes pet-charm { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+
+/* Pet picker: turquoise "sticker" brutalism (the site's mint accent, no pink mixed in).
+   Ink text on turquoise stays readable in both themes; in dark mode the hard shadow turns pale mint */
+.pet-ui { --pet-bg: var(--mint); --pet-ink: #111111; --pet-tile: #e6fdf8; --pet-shadow: #111111; }
+html.dark .pet-ui { --pet-tile: #d9fbf4; --pet-shadow: #bff5ea; }
+.pet-panel {
+  background: var(--pet-bg); color: var(--pet-ink);
+  border: 3px solid var(--pet-ink); border-radius: 4px;
+  box-shadow: 6px 6px 0 var(--pet-shadow);
+}
+.pet-tile {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  padding: 8px 4px 6px; border: 2px dashed var(--pet-ink); border-radius: 3px;
+  color: var(--pet-ink); background: transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.pet-tile:hover, .pet-tile:focus-visible {
+  background: var(--pet-tile); border-style: solid;
+  transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--pet-ink);
+}
+.pet-tile[aria-checked="true"] { background: var(--pet-tile); border-style: solid; box-shadow: 3px 3px 0 var(--pet-ink); }
+.pet-tile[aria-checked="true"]::after {
+  content: "✓"; position: absolute; top: -10px; right: -10px; width: 22px; height: 22px;
+  display: grid; place-items: center; border-radius: 999px;
+  background: var(--pet-ink); color: var(--pet-bg); font-size: 12px; font-weight: 900;
+}
+.pet-paw-btn {
+  width: 48px; height: 48px; display: grid; place-items: center;
+  background: var(--pet-bg); color: var(--pet-ink);
+  border: 3px solid var(--pet-ink); border-radius: 4px;
+  box-shadow: 4px 4px 0 var(--pet-shadow); transform: rotate(-8deg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.pet-paw-btn:hover, .pet-paw-btn[aria-expanded="true"] { transform: rotate(0deg) translate(-1px, -1px); box-shadow: 5px 5px 0 var(--pet-shadow); }
+.pet-paw-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--pet-shadow); }
+
+.pet-picker { transform-origin: bottom right; animation: viewer-pop-in 0.25s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
+
 @keyframes pet-step { 0%, 100% { transform: rotate(18deg); } 50% { transform: rotate(-18deg); } }
 @keyframes pet-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
 @keyframes pet-tail { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(14deg); } }
@@ -281,6 +417,20 @@ img[data-loading] {
   [data-img-loading] { animation: none; }
 }
 
+/* Pink loading circle in the image preview */
+.viewer-spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 4px solid rgba(236, 72, 153, 0.2);
+  border-top-color: var(--accent);
+  animation: viewer-spin 0.8s linear infinite;
+}
+@keyframes viewer-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .viewer-spinner { animation-duration: 2s; }
+}
+
 /* Theme-switch pop-up: pops in at the center of the screen, then fades away */
 .theme-toast {
   translate: -50% -50%;
@@ -307,6 +457,9 @@ img[data-loading] {
 @media (prefers-reduced-motion: reduce) {
   .preloader--opening {
     animation-duration: 0.01s;
+  }
+  .preloader {
+    transition-duration: 0.3s;
   }
 }
 

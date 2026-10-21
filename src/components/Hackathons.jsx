@@ -53,7 +53,7 @@ function Polaroid({ item, big, tilt, onOpen }) {
   return (
     <button
       onClick={() => onOpen(item)}
-      className={`group relative block w-full text-left ${tilt} hover:rotate-0 hover:-translate-y-1.5 transition-transform duration-300 ease-out`}
+      className={`group relative block w-full text-left ${tilt} hover:rotate-0 hover:-translate-y-1.5 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]`}
     >
       {/* Tape */}
       <span
@@ -64,7 +64,7 @@ function Polaroid({ item, big, tilt, onOpen }) {
       {/* The polaroid */}
       <span className="brutal-card block bg-white dark:bg-[#f6f1f4] p-3 pb-4 sm:p-4 sm:pb-5">
         <span className={`relative block overflow-hidden rounded-md border-2 border-[#111111] ${big ? "aspect-[4/3]" : "aspect-[5/4]"}`}>
-          <img src={item.photo} alt={item.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <img src={item.photo} alt={item.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]" />
         </span>
 
         {/* Caption: always dark ink on the white polaroid, in both themes */}
@@ -101,8 +101,8 @@ export default function Hackathons() {
         <SectionHeader
           number="02"
           eyebrow="Hackathons"
-          title={<>Built under <span className="text-pink-500">pressure</span></>}
-          subtitle={`${wins.length} grand champion wins and counting. Tap a photo to see it up close.`}
+          title={<>Built under <span className="text-[var(--accent)]">pressure</span></>}
+          subtitle="My kind of race against time"
         />
 
         {/* Wins */}

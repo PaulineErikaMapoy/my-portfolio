@@ -10,6 +10,7 @@ export default function CertificateViewer({ entry, onClose }) {
   const closeRef = useRef(null);
   const timer = useRef(null);
   const [closing, setClosing] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const requestClose = useCallback(() => {
     if (timer.current) return;
@@ -60,8 +61,21 @@ export default function CertificateViewer({ entry, onClose }) {
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
-        <div className="flex-1 min-h-0 overflow-auto bg-gray-100 dark:bg-black/40 p-3 sm:p-5 flex items-center justify-center">
-          <img src={entry.full} alt={`${entry.title} certificate`} className="max-w-full max-h-[65vh] object-contain rounded-lg shadow-lg" />
+        <div className="relative flex-1 min-h-0 overflow-auto bg-gray-100 dark:bg-black/40 p-3 sm:p-5 flex items-center justify-center min-h-[40vh]">
+          {/* Pink spinner until the full-size image arrives */}
+          {!loaded && (
+            <span className="absolute inset-0 flex flex-col items-center justify-center gap-3" role="status">
+              <span className="viewer-spinner" aria-hidden="true" />
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">Loading</span>
+            </span>
+          )}
+          <img
+            src={entry.full}
+            alt={`${entry.title} certificate`}
+            onLoad={() => setLoaded(true)}
+            onError={() => setLoaded(true)}
+            className={`max-w-full max-h-[65vh] object-contain rounded-lg shadow-lg transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+          />
         </div>
         <div className="flex items-center justify-end gap-3 p-4 border-t-2 border-[var(--brutal-border)]">
           <a

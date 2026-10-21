@@ -33,3 +33,7 @@ src/assets/Certificates/*
 
 # Resume stays private (visitors use "Request CV" instead)
 src/assets/Resume/
+
+# Full-size project originals stay local; the site uses the web-sized copies in Projects/web
+src/assets/Projects/*.png
+src/assets/Projects/CashTrack/

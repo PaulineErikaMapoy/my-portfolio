@@ -79,10 +79,6 @@ const timeline = [
   },
 ];
 
-const all = timeline.flatMap((y) => y.entries);
-const orgCount = all.filter((e) => e.kind === "org").length;
-const eventCount = all.length - orgCount;
-
 export default function Involvement() {
   const [open, setOpen] = useState(null);
   const close = useCallback(() => setOpen(null), []);
@@ -91,10 +87,10 @@ export default function Involvement() {
     <FadeIn>
       <section id="involvement" className="section-container py-16 sm:py-20">
         <SectionHeader
-          number="05"
+          number="04"
           eyebrow="Involvement"
           title={<>Where I've <span className="text-pink-500">shown up</span></>}
-          subtitle={`${orgCount} orgs, ${eventCount} events and seminars, since 2022. Tap any entry to see the proof.`}
+          subtitle="Proof that I don't just talk the talk"
         />
 
         <div className="relative">

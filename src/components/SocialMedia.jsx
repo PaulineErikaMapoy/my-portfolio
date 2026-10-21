@@ -157,10 +157,10 @@ export default function SocialMedia() {
 
         {/* Header */}
         <SectionHeader
-          number="07"
+          number="08"
           eyebrow="Socials"
           title={<>Let's stay <span className="text-pink-500">connected</span></>}
-          subtitle="Swipe through my feed and follow along."
+          subtitle="Find me around the internet"
         />
 
         <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16">

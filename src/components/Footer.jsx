@@ -1,7 +1,33 @@
 // src/components/Footer.jsx
+// Closing section: a big pink "let's work together" card with email + CV request,
+// then name, quick links to every section, socials, and a big name wordmark.
 import React, { useState } from "react";
 
 const EMAIL = "paulinemapoyph@gmail.com";
+const CV_REQUEST = `mailto:${EMAIL}?subject=${encodeURIComponent("CV request")}&body=${encodeURIComponent(
+  "Hi Pau,\n\nI came across your portfolio and would love to see your CV.\n\nName:\nCompany / organization:\nWhat it's for:\n\nThanks!"
+)}`;
+
+const links = [
+  { id: "experience", label: "Experience" },
+  { id: "hackathons", label: "Hackathons" },
+  { id: "projects", label: "Projects" },
+  { id: "involvement", label: "Involvement" },
+  { id: "certifications", label: "Credentials" },
+  { id: "skills", label: "Skills" },
+  { id: "onstage", label: "On Stage" },
+  { id: "socials", label: "Socials" },
+];
+
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  // offsetTop ignores any temporary animation shift, so we land exactly on the section
+  let top = 0;
+  for (let node = el; node; node = node.offsetParent) top += node.offsetTop;
+  const topBar = window.innerWidth < 1024 ? 72 : 0; // mobile header height
+  window.scrollTo({ top: top - topBar, behavior: "smooth" });
+}
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
@@ -47,67 +73,107 @@ export default function Footer() {
     },
   ];
 
-  return (
-    <footer className="border-t-[3px] border-[var(--brutal-border)]">
-      <div className="section-container py-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-          {/* Name + one-line hello + email */}
-          <div>
-            <p className="text-xl font-black uppercase tracking-tight text-gray-900 dark:text-white">Pauline Mapoy</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Let's make something <span className="font-bold text-[var(--accent-ink)]">awesome</span>.
-            </p>
-            <div className="flex items-center gap-2 mt-3">
-              <a
-                href={`mailto:${EMAIL}`}
-                className="text-sm font-bold text-gray-900 dark:text-white underline decoration-[var(--accent-ink)] decoration-2 underline-offset-4 hover:text-[var(--accent-ink)] transition-colors break-all"
-              >
-                {EMAIL}
-              </a>
-              <button
-                onClick={copyEmail}
-                aria-label="Copy email address"
-                title={copied ? "Copied!" : "Copy email"}
-                className="brutal-chip !rounded-lg w-8 h-8 shrink-0 flex items-center justify-center text-gray-900 dark:text-white"
-              >
-                {copied ? (
-                  <svg className="w-4 h-4 text-[var(--accent-ink)]" fill="none" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                ) : (
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25" /></svg>
-                )}
-              </button>
-            </div>
-          </div>
+  const copyIcon = copied ? (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+  ) : (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25" /></svg>
+  );
 
-          {/* Socials + back to top */}
-          <div className="flex items-center gap-3">
-            {socials.map((s) => (
-              <a
-                key={s.label}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                className="brutal-btn [--brutal-btn-shadow:var(--brutal-shadow)] w-11 h-11 flex items-center justify-center bg-[var(--brutal-chip-bg)] text-gray-900 dark:text-white hover:text-[var(--accent-ink)]"
-              >
-                {s.icon}
-              </a>
-            ))}
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              aria-label="Back to top"
-              title="Back to top"
-              className="brutal-btn w-11 h-11 flex items-center justify-center bg-[var(--accent)] text-white"
+  return (
+    <footer className="@container relative overflow-hidden border-t-[3px] border-[var(--brutal-border)]">
+      {/* Call to action */}
+      <div className="section-container pt-14 sm:pt-20">
+        <div className="brutal-card [--brutal-shadow:var(--brutal-chip-border)] [--brutal-offset:10px] !bg-[var(--accent)] text-white p-7 sm:p-12">
+          <p className="font-mono text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-white/85">Got something in mind?</p>
+          <h2 className="mt-3 text-4xl sm:text-6xl font-black tracking-tight leading-[1.02]">
+            Let's build something <span className="underline decoration-[6px] underline-offset-[6px] decoration-white/60">together</span>.
+          </h2>
+          <div className="flex flex-wrap items-center gap-3 mt-8">
+            <a
+              href={`mailto:${EMAIL}`}
+              className="brutal-btn [--brutal-btn-shadow:#111111] px-5 py-3 bg-white text-gray-900 text-sm sm:text-base font-black break-all"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>
+              {EMAIL} ↗
+            </a>
+            <button
+              onClick={copyEmail}
+              aria-label="Copy email address"
+              title={copied ? "Copied!" : "Copy email"}
+              className="brutal-btn [--brutal-btn-shadow:#111111] h-12 px-4 flex items-center gap-2 bg-white text-gray-900 text-sm font-bold"
+            >
+              {copyIcon}
+              <span>{copied ? "Copied!" : "Copy"}</span>
             </button>
+            <a
+              href={CV_REQUEST}
+              className="h-12 px-4 flex items-center rounded-xl border-[3px] border-white text-white text-sm font-black hover:bg-white/15 transition-colors"
+            >
+              Request CV
+            </a>
           </div>
         </div>
-
-        <p className="mt-8 pt-5 border-t-2 border-gray-100 dark:border-white/10 text-xs text-gray-400 dark:text-gray-500">
-          © {new Date().getFullYear()} Pauline Erika Mapoy
-        </p>
       </div>
+
+      {/* Info columns */}
+      <div className="section-container grid grid-cols-1 md:grid-cols-12 gap-10 pt-14 pb-6">
+        <div className="md:col-span-5">
+          <p className="text-2xl font-black uppercase tracking-tight text-gray-900 dark:text-white">Pauline Mapoy</p>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Project Manager & Front-End Developer</p>
+        </div>
+
+        <nav className="md:col-span-4" aria-label="Footer">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 mb-3">Explore</p>
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
+            {links.map((l) => (
+              <li key={l.id}>
+                <button onClick={() => goTo(l.id)} className="text-sm font-bold text-gray-900 dark:text-white hover:text-[var(--accent-ink)] transition-colors">
+                  {l.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="md:col-span-3">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 mb-3">Find me on</p>
+          <ul className="flex flex-col gap-2">
+            {socials.map((s) => (
+              <li key={s.label}>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2.5 text-sm font-bold text-gray-900 dark:text-white hover:text-[var(--accent-ink)] transition-colors"
+                >
+                  <span className="brutal-chip w-8 h-8 flex items-center justify-center [&_svg]:w-4 [&_svg]:h-4">{s.icon}</span>
+                  {s.label}
+                  <span className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="section-container flex flex-wrap items-center justify-between gap-3 pt-5 pb-4 border-t-2 border-gray-100 dark:border-white/10">
+        <p className="text-xs text-gray-400 dark:text-gray-500">© {new Date().getFullYear()} Pauline Erika Mapoy</p>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="brutal-chip px-3 py-1.5 flex items-center gap-1.5 text-xs font-black text-gray-900 dark:text-white"
+        >
+          Back to top
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="3" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>
+        </button>
+      </div>
+
+      {/* Big name wordmark, sized to the footer width and cut off at the bottom edge */}
+      <p
+        aria-hidden="true"
+        className="select-none whitespace-nowrap text-center font-black uppercase tracking-tighter leading-[0.78] text-[13cqw] text-pink-100 dark:text-white/[0.05] -mb-[2cqw] pt-2"
+      >
+        Pauline Mapoy
+      </p>
     </footer>
   );
 }

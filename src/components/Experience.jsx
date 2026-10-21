@@ -46,7 +46,7 @@ export default function Experience() {
           number="01"
           eyebrow="Experience"
           title={<>Where I've <span className="text-pink-500">worked</span></>}
-          subtitle="Internships where I've designed, built, and shipped."
+          subtitle="The teams I've been part of, so far."
         />
 
         <ol className="flex flex-col gap-8">

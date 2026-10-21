@@ -72,9 +72,9 @@ export default function Skills() {
 
         {/* Header */}
         <SectionHeader
-          number="04"
+          number="06"
           eyebrow="Skills"
-          title={<>What I bring <span className="text-pink-500">to the table</span></>}
+          title={<>What I bring <span className="text-[var(--accent)]">to the table</span></>}
           subtitle="Tech edition"
         />
 
@@ -85,7 +85,7 @@ export default function Skills() {
               className={`brutal-card brutal-hover p-5 sm:p-6 ${i % 4 === 1 || i % 4 === 2 ? "brutal-mint" : ""}`}
             >
               {/* Card header */}
-              <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-pink-200 dark:border-white/10">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-teal-200 dark:border-white/10">
                 <h3 className="text-base font-black text-gray-900 dark:text-white">{group.title}</h3>
                 <span className="text-xs font-bold text-white bg-[var(--accent)] min-w-6 h-6 px-2 rounded-full flex items-center justify-center tabular-nums">
                   {group.skills.length}
@@ -97,7 +97,7 @@ export default function Skills() {
                 {group.skills.map((skill) => (
                   <li
                     key={skill.name}
-                    className="brutal-chip inline-flex items-center gap-2 px-3 py-2 text-sm font-bold text-gray-900 dark:text-white hover:bg-pink-50 dark:hover:bg-pink-500/10"
+                    className="brutal-chip inline-flex items-center gap-2 px-3 py-2 text-sm font-bold text-gray-900 dark:text-white hover:bg-teal-50 dark:hover:bg-teal-400/10"
                   >
                     <img loading="lazy" decoding="async" src={skill.icon} alt="" aria-hidden="true" className="w-6 h-6 object-contain shrink-0" />
                     <span>{skill.name}</span>

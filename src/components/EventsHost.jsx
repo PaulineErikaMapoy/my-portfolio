@@ -108,14 +108,26 @@ export default function EventsHost() {
       <section id="onstage" className="section-container py-16 sm:py-20">
         {/* Header */}
         <SectionHeader
-          number="06"
+          number="07"
           eyebrow="On Stage"
           title={<>Mic Check, <span className="text-pink-500">It's Me!</span></>}
           subtitle="Hosting since 2023, from formal programs to high-energy celebrations."
         />
 
+        {/* Pull quote, with the sort switch beside it on wider screens */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 lg:gap-10 mb-5">
+        <blockquote data-reveal className="relative max-w-3xl pt-2">
+          <span aria-hidden="true" className="absolute -top-6 -left-1 text-7xl sm:text-8xl font-black leading-none text-[var(--accent)] select-none">“</span>
+          <p className="pl-10 sm:pl-14 text-2xl sm:text-3xl font-black tracking-tight leading-snug text-gray-900 dark:text-white">
+            At the core of everything I do is my love for{" "}
+            <span className="text-[var(--accent-ink)]">communication</span> and{" "}
+            <span className="text-[var(--accent-ink)]">creative expression</span>.
+          </p>
+          <footer className="pl-10 sm:pl-14 mt-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">— Pau</footer>
+        </blockquote>
+
         {/* Sort switch */}
-        <div data-reveal className="flex items-center justify-center sm:justify-end gap-3 mb-5">
+        <div data-reveal className="flex items-center justify-center sm:justify-end gap-3 shrink-0">
           <span className="text-[11px] font-black tracking-widest uppercase text-gray-900 dark:text-white">Sort</span>
           <div className="brutal-tag flex p-1 gap-1 bg-[var(--brutal-chip-bg)] !rounded-xl" role="group" aria-label="Sort event photos">
             {sortOptions.map((o) => (
@@ -131,6 +143,7 @@ export default function EventsHost() {
               </button>
             ))}
           </div>
+        </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 lg:gap-8">

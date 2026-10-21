@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Hero from "./components/Hero";
 import Experience from "./components/Experience";
 import Hackathons from "./components/Hackathons";
+import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Skills from "./components/Skills";
 import Involvement from "./components/Involvement";
@@ -29,23 +30,27 @@ export default function App() {
           <div className="band-dots-white">
             <Experience />
           </div>
-          <Hackathons />
-          <div className="band-dots">
-            <Certifications />
+          <div className="accent-mint">
+            <Hackathons />
           </div>
-          <div className="band-dots-white">
-            <Skills />
-          </div>
+          <Projects />
           <div className="band-blush">
             <Involvement />
+          </div>
+          <div className="band-dots-white">
+            <Certifications />
+          </div>
+          <div className="band-mint">
+            <Skills />
           </div>
           <div className="band-dots-white">
             <EventsHost />
           </div>
           <SocialMedia />
+          {/* Inside the main column so the sticky sidebar stays put all the way to the bottom */}
+          <Footer />
         </main>
       </div>
-      <Footer />
     </div>
   );
 }
