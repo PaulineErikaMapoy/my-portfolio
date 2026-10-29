@@ -1,5 +1,5 @@
 // src/useScrollReveal.js
-// Fallback for older browsers: each card / block slides up and fades in when it
+// Phones and older browsers: each card / block slides up and fades in when it
 // enters the screen. Things that appear together are slightly staggered.
 import { useEffect } from "react";
 
@@ -9,8 +9,10 @@ const TARGETS = "main .brutal-card, main [data-reveal], footer .brutal-card";
 export default function useScrollReveal() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // Modern browsers get scroll-linked entrances from CSS instead (see "Scroll-driven" in index.css)
-    if (window.CSS?.supports?.("animation-timeline: view()")) return;
+    // Modern browsers on tablets and up get scroll-linked entrances from CSS instead
+    // (see "Scroll-driven" in index.css); phones always use this timed version
+    const phone = window.matchMedia("(max-width: 767px)").matches;
+    if (!phone && window.CSS?.supports?.("animation-timeline: view()")) return;
 
     const els = [...document.querySelectorAll(TARGETS)];
     // Anything already on screen at load stays put (no flash on the first view)

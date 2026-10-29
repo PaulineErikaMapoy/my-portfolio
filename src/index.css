@@ -398,7 +398,9 @@ main { overflow-x: clip; }
    opacity are animated, and the browser runs these off the main thread, so they stay smooth.
    Older browsers skip this block and use the JS fallback in useScrollReveal.js instead. */
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
+  /* Tablets and desktops only: on phones the cards are tall for the screen and many phones lack
+     support, so phones get the timed fade-and-slide from useScrollReveal.js instead */
+  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
     /* Shared setup: each element's motion runs from the moment it starts to appear until it's
        most of the way up the screen, so the entrances feel slow and easy to watch */
     main section > [data-reveal]:first-child, #experience .exp-head,
@@ -462,15 +464,6 @@ main { overflow-x: clip; }
       --r: -4deg;
     }
     #certifications .brutal-card:nth-child(even) { --r: 4deg; }
-
-    /* Skills on phones: the cards are dealt out from the middle like a hand of cards */
-    @media (max-width: 767px) {
-      #skills .skills-head { animation-name: sd-up; }
-      #skills .brutal-card { animation-name: sd-deal; --dx: -40%; --r: -6deg; }
-      #skills .brutal-card:nth-child(2) { --dx: 40%; --r: 6deg; }
-      #skills .brutal-card:nth-child(3) { --dx: -40%; --r: 4deg; }
-      #skills .brutal-card:nth-child(4) { --dx: 40%; --r: -4deg; }
-    }
 
     /* Skills on tablets and up: a pinned stage. The section is made tall and its content
        sticks to the screen; everything inside is driven by how far through the section you are
@@ -612,7 +605,6 @@ main { overflow-x: clip; }
 @keyframes sd-pop-tilt{ from { opacity: 0; scale: 0.8; rotate: var(--r); } }
 @keyframes sd-toss    { from { opacity: 0; translate: 0 90px; rotate: var(--r, -10deg); scale: 0.85; } }
 @keyframes sd-stamp   { from { opacity: 0; scale: 1.5; } 60% { opacity: 1; scale: 0.96; } }
-@keyframes sd-deal    { from { opacity: 0; translate: var(--dx) 70px; rotate: var(--r); } }
 @keyframes sd-draw    { from { scale: 1 0; } }
 @keyframes sd-word    { from { opacity: 0.08; translate: 0 0.75em; } }
 @keyframes sd-exit    { to { opacity: 0.2; translate: 0 -70px; } }
