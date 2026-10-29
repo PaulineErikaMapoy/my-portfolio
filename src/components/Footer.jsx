@@ -1,12 +1,11 @@
 // src/components/Footer.jsx
-// Closing section: a big pink "let's work together" card with email + CV request,
+// Closing section: a big pink "let's work together" card with email + CV download,
 // then name, quick links to every section, socials, and a big name wordmark.
 import React, { useState } from "react";
+import scrollToSection from "../scrollToSection";
 
 const EMAIL = "paulinemapoyph@gmail.com";
-const CV_REQUEST = `mailto:${EMAIL}?subject=${encodeURIComponent("CV request")}&body=${encodeURIComponent(
-  "Hi Pau,\n\nI came across your portfolio and would love to see your CV.\n\nName:\nCompany / organization:\nWhat it's for:\n\nThanks!"
-)}`;
+const CV_FILE = "/Pauline-Mapoy-CV.pdf"; // public/Pauline-Mapoy-CV.pdf
 
 const links = [
   { id: "experience", label: "Experience" },
@@ -19,15 +18,6 @@ const links = [
   { id: "socials", label: "Socials" },
 ];
 
-function goTo(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  // offsetTop ignores any temporary animation shift, so we land exactly on the section
-  let top = 0;
-  for (let node = el; node; node = node.offsetParent) top += node.offsetTop;
-  const topBar = window.innerWidth < 1024 ? 72 : 0; // mobile header height
-  window.scrollTo({ top: top - topBar, behavior: "smooth" });
-}
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
@@ -105,10 +95,12 @@ export default function Footer() {
               <span>{copied ? "Copied!" : "Copy"}</span>
             </button>
             <a
-              href={CV_REQUEST}
-              className="h-12 px-4 flex items-center rounded-xl border-[3px] border-white text-white text-sm font-black hover:bg-white/15 transition-colors"
+              href={CV_FILE}
+              download="Pauline-Mapoy-CV.pdf"
+              className="h-12 px-4 flex items-center gap-2 rounded-xl border-[3px] border-white text-white text-sm font-black hover:bg-white/15 transition-colors"
             >
-              Request CV
+              Download CV
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
             </a>
           </div>
         </div>
@@ -126,7 +118,7 @@ export default function Footer() {
           <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
             {links.map((l) => (
               <li key={l.id}>
-                <button onClick={() => goTo(l.id)} className="text-sm font-bold text-gray-900 dark:text-white hover:text-[var(--accent-ink)] transition-colors">
+                <button onClick={() => scrollToSection(l.id)} className="text-sm font-bold text-gray-900 dark:text-white hover:text-[var(--accent-ink)] transition-colors">
                   {l.label}
                 </button>
               </li>

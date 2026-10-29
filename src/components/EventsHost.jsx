@@ -71,6 +71,15 @@ const arrow = (d) => (
   </svg>
 );
 
+// The pull quote, split into words (accent = pink)
+const quoteWords = [
+  ..."At the core of everything I do is my love for".split(" ").map((text) => ({ text })),
+  { text: "communication", accent: true },
+  { text: "and" },
+  { text: "creative", accent: true },
+  { text: "expression.", accent: true },
+];
+
 export default function EventsHost() {
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -108,7 +117,7 @@ export default function EventsHost() {
       <section id="onstage" className="section-container py-16 sm:py-20">
         {/* Header */}
         <SectionHeader
-          number="07"
+          number="08"
           eyebrow="On Stage"
           title={<>Mic Check, <span className="text-pink-500">It's Me!</span></>}
           subtitle="Hosting since 2023, from formal programs to high-energy celebrations."
@@ -119,9 +128,12 @@ export default function EventsHost() {
         <blockquote data-reveal className="relative max-w-3xl pt-2">
           <span aria-hidden="true" className="absolute -top-6 -left-1 text-7xl sm:text-8xl font-black leading-none text-[var(--accent)] select-none">“</span>
           <p className="pl-10 sm:pl-14 text-2xl sm:text-3xl font-black tracking-tight leading-snug text-gray-900 dark:text-white">
-            At the core of everything I do is my love for{" "}
-            <span className="text-[var(--accent-ink)]">communication</span> and{" "}
-            <span className="text-[var(--accent-ink)]">creative expression</span>.
+            {/* One span per word: they rise in one after another as the quote scrolls in */}
+            {quoteWords.map((w, i) => (
+              <React.Fragment key={i}>
+                <span className={`q-w ${w.accent ? "text-[var(--accent-ink)]" : ""}`} style={{ "--i": i }}>{w.text}</span>{" "}
+              </React.Fragment>
+            ))}
           </p>
           <footer className="pl-10 sm:pl-14 mt-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">— Pau</footer>
         </blockquote>

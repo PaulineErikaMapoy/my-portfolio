@@ -1,9 +1,11 @@
 // src/components/SectionHeader.jsx
 // Shared 3-layer section title: numbered label / big title / subtitle,
-// left-aligned with a thick rule underneath
+// left-aligned with a thick rule underneath.
+// oneLine: title and subtitle each stay on a single row (stacked), shrinking to fit when there's room;
+// on narrow screens they wrap as usual
 import React from "react";
 
-export default function SectionHeader({ number, eyebrow, title, subtitle }) {
+export default function SectionHeader({ number, eyebrow, title, subtitle, oneLine = false }) {
   return (
     <div data-reveal className="mb-10 sm:mb-12">
       <div className="flex items-center gap-3 mb-3">
@@ -16,12 +18,12 @@ export default function SectionHeader({ number, eyebrow, title, subtitle }) {
           {eyebrow}
         </span>
       </div>
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 md:gap-10 pb-5 border-b-[3px] border-[var(--brutal-border)]">
-        <h2 className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.05] text-gray-900 dark:text-white">
+      <div className={`flex flex-col gap-3 pb-5 border-b-[3px] border-[var(--brutal-border)] ${oneLine ? "@container" : "md:flex-row md:items-end md:justify-between md:gap-10"}`}>
+        <h2 className={`${oneLine ? "text-4xl @2xl:text-[min(3rem,5.3cqi)] @2xl:whitespace-nowrap" : "text-4xl sm:text-5xl"} font-black tracking-tight leading-[1.05] text-gray-900 dark:text-white`}>
           {title}
         </h2>
         {subtitle && (
-          <p className="md:max-w-sm md:text-right text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed">
+          <p className={`${oneLine ? "@xl:whitespace-nowrap" : "md:max-w-sm md:text-right"} text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed`}>
             {subtitle}
           </p>
         )}

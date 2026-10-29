@@ -4,18 +4,30 @@
 // Mobile: sticky top bar with a dropdown menu.
 import React, { useEffect, useRef, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
+import scrollToSection from "../scrollToSection";
 
 const sections = [
   { id: "hero",           label: "Home",        icon: "M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" },
   { id: "experience",     label: "Experience",  icon: "M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0" },
   { id: "hackathons",     label: "Hackathons",  icon: "M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" },
   { id: "projects",       label: "Projects",    icon: "M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122" },
+  { id: "education",      label: "Education",   icon: "M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" },
   { id: "involvement",    label: "Involvement", icon: "M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" },
   { id: "certifications", label: "Credentials", icon: "M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" },
   { id: "skills",         label: "Skills",      icon: "M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" },
   { id: "onstage",        label: "On Stage",    icon: "M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" },
+  { id: "videos",         label: "Videos",      icon: "M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5" },
   { id: "socials",        label: "Socials",     icon: "M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" },
 ];
+
+// How the links are grouped in the sidebar (same order as the page)
+const groups = [
+  { label: null,         ids: ["hero"] },
+  { label: "Work",       ids: ["experience", "hackathons", "projects"] },
+  { label: "Growth",     ids: ["education", "involvement", "certifications", "skills"] },
+  { label: "More of me", ids: ["onstage", "videos", "socials"] },
+];
+const byId = Object.fromEntries(sections.map((s) => [s.id, s]));
 
 // Desktop sizing (px, including the gap around the floating card)
 const MIN_WIDTH = 230;
@@ -133,14 +145,8 @@ export default function Sidebar() {
   function goTo(id) {
     setOpen(false);
     setActive(id);
-    const el = document.getElementById(id);
-    if (!el) return;
-    // offsetTop ignores any temporary animation shift, so we land exactly on the section
-    let top = 0;
-    for (let node = el; node; node = node.offsetParent) top += node.offsetTop;
-    const topBar = window.innerWidth < 1024 ? 72 : 0; // mobile header height
     // Wait a frame so the mobile menu's scroll lock is released first
-    requestAnimationFrame(() => window.scrollTo({ top: top - topBar, behavior: "smooth" }));
+    requestAnimationFrame(() => scrollToSection(id));
   }
 
   // On desktop, collapsed hides text and centers icons; on mobile it has no effect
@@ -167,12 +173,12 @@ export default function Sidebar() {
             lg:brutal-card lg:!bg-[var(--sidebar-bg)] ${collapsed ? "lg:px-0 lg:py-5" : "lg:p-5"}`}
         >
           {/* Name */}
-          <header className={`relative flex items-center justify-between lg:pb-4 lg:border-b-2 border-[var(--brutal-border)] ${collapsed ? "lg:justify-center" : ""}`}>
-            <button onClick={() => goTo("hero")} className={`group text-left min-w-0 ${hideWhenCollapsed}`}>
+          <header className={`sb-head relative flex items-center justify-between lg:pb-4 lg:border-b-2 border-[var(--brutal-border)] ${collapsed ? "lg:justify-center" : ""}`}>
+            <button onClick={() => goTo("hero")} className={`group text-left min-w-0 flex-1 @container ${hideWhenCollapsed}`}>
               <span className="block text-lg lg:text-xl font-black tracking-tight uppercase text-gray-900 dark:text-white group-hover:text-[var(--accent-ink)] transition-colors truncate">
                 Pauline Mapoy
               </span>
-              <span className="block text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <span className="block whitespace-nowrap overflow-hidden text-ellipsis text-[min(0.75rem,5.1cqi)] text-gray-500 dark:text-gray-400 mt-0.5">
                 Project Manager & Front-End Developer
               </span>
             </button>
@@ -210,62 +216,64 @@ export default function Sidebar() {
             id="site-navigation"
             className={`flex absolute top-full inset-x-0 max-lg:transition-all max-lg:duration-300 max-lg:ease-out ${
               open ? "max-lg:opacity-100 max-lg:translate-y-0 max-lg:visible" : "max-lg:opacity-0 max-lg:-translate-y-3 max-lg:invisible max-lg:pointer-events-none"
-            } max-h-[calc(100dvh-4.5rem)] overflow-y-auto px-4 sm:px-6 py-5 bg-white dark:bg-[var(--page-bg)] border-b-2 border-[var(--brutal-border)] lg:static lg:flex lg:flex-1 lg:max-h-none lg:p-0 lg:px-1 lg:pb-2 lg:mt-5 lg:border-b-0 lg:bg-transparent lg:dark:bg-transparent flex-col justify-between`}
+            } max-h-[calc(100dvh-4.5rem)] overflow-y-auto px-4 sm:px-6 py-5 bg-white dark:bg-[var(--page-bg)] border-b-2 border-[var(--brutal-border)] lg:static lg:flex lg:flex-1 lg:min-h-0 lg:max-h-none lg:p-0 lg:px-1 lg:pb-2 lg:mt-5 lg:border-b-0 lg:bg-transparent lg:dark:bg-transparent flex-col justify-between`}
           >
-            <nav aria-label="Sections" className="mb-6">
-              <p className={`text-[11px] font-black tracking-widest uppercase text-gray-900 dark:text-white mb-3 ${hideWhenCollapsed}`}>
-                Sections
-              </p>
-              <ul className={`flex flex-col gap-2 ${collapsed ? "lg:items-center" : ""}`}>
-                {sections.map((s) => {
-                  const isActive = active === s.id;
-                  return (
-                    <li
-                      key={s.id}
-                      style={{ transitionDelay: open ? `${80 + sections.indexOf(s) * 40}ms` : "0ms" }}
-                      className={`max-lg:transition-all max-lg:duration-300 max-lg:ease-out ${open ? "max-lg:opacity-100 max-lg:translate-x-0" : "max-lg:opacity-0 max-lg:-translate-x-3"}`}
-                    >
-                      <button
-                        onClick={() => goTo(s.id)}
-                        title={collapsed ? s.label : undefined}
-                        aria-label={s.label}
-                        aria-current={isActive ? "location" : undefined}
-                        className={`group w-full text-left text-sm font-bold px-3 py-2.5 lg:py-2 rounded-xl border-2 flex items-center gap-2.5 transition-all duration-200 ${
-                          collapsed ? "lg:w-11 lg:h-11 lg:p-0 lg:justify-center" : ""
-                        } ${
-                          isActive
-                            ? "bg-[var(--accent)] text-white border-[var(--brutal-chip-border)] shadow-[3px_3px_0_0_var(--brutal-chip-border)]"
-                            : "text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-900 dark:hover:text-white hover:bg-[var(--brutal-chip-bg)] hover:border-[var(--brutal-chip-border)] hover:shadow-[3px_3px_0_0_var(--accent)]"
-                        }`}
-                      >
-                        <Icon d={s.icon} />
-                        <span className={`flex-1 truncate ${hideWhenCollapsed}`}>{s.label}</span>
-                        <span
-                          aria-hidden="true"
-                          className={`transition-all duration-300 ${hideWhenCollapsed} ${isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"}`}
+            <nav aria-label="Sections" className="sb-nav mb-5 lg:mb-3 flex flex-col gap-5 lg:gap-4 lg:min-h-0 lg:-mx-1 lg:px-1 lg:pb-1.5">
+              {groups.map((group) => (
+                <div key={group.label || "home"}>
+                  {group.label && (
+                    <>
+                      <p className={`sb-label font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 dark:text-gray-500 mb-2 px-3 ${hideWhenCollapsed}`}>
+                        {group.label}
+                      </p>
+                      {/* Collapsed rail: a short divider stands in for the heading */}
+                      {collapsed && <span aria-hidden="true" className="hidden lg:block w-6 h-[2px] mx-auto mb-2 rounded-full bg-gray-300 dark:bg-white/15" />}
+                    </>
+                  )}
+                  <ul className={`sb-list flex flex-col gap-2 max-lg:grid max-lg:grid-cols-2 max-lg:gap-x-3 ${collapsed ? "lg:items-center" : ""}`}>
+                    {group.ids.map((id) => {
+                      const s = byId[id];
+                      const isActive = active === s.id;
+                      return (
+                        <li
+                          key={s.id}
+                          style={{ transitionDelay: open ? `${80 + sections.indexOf(s) * 40}ms` : "0ms" }}
+                          className={`max-lg:transition-all max-lg:duration-300 max-lg:ease-out ${open ? "max-lg:opacity-100 max-lg:translate-x-0" : "max-lg:opacity-0 max-lg:-translate-x-3"}`}
                         >
-                          →
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+                          <button
+                            onClick={() => goTo(s.id)}
+                            title={collapsed ? s.label : undefined}
+                            aria-label={s.label}
+                            aria-current={isActive ? "location" : undefined}
+                            className={`sb-item group w-full text-left text-sm font-bold px-3 py-2.5 lg:py-2 rounded-xl border-2 flex items-center gap-2.5 transition-all duration-200 ${
+                              collapsed ? "lg:w-11 lg:h-11 lg:p-0 lg:justify-center" : ""
+                            } ${
+                              isActive
+                                ? "bg-[var(--accent)] text-white border-[var(--brutal-chip-border)] shadow-[3px_3px_0_0_var(--brutal-chip-border)]"
+                                : "text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-900 dark:hover:text-white hover:bg-[var(--brutal-chip-bg)] hover:border-[var(--brutal-chip-border)] hover:shadow-[3px_3px_0_0_var(--accent)]"
+                            }`}
+                          >
+                            <Icon d={s.icon} />
+                            <span className={`flex-1 truncate ${hideWhenCollapsed}`}>{s.label}</span>
+                            <span
+                              aria-hidden="true"
+                              className={`transition-all duration-300 ${hideWhenCollapsed} ${isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"}`}
+                            >
+                              →
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
             </nav>
 
-            {/* Light / dark mode switch */}
-            {/* One switch only; when collapsed the card around it just disappears */}
-            <div className="mt-auto pt-5 border-t-2 border-[var(--brutal-border)]">
-              <div
-                className={`brutal-card [--brutal-offset:4px] flex items-center justify-between gap-2 p-3 ${
-                  collapsed ? "lg:!border-0 lg:!shadow-none lg:!bg-transparent lg:!p-0 lg:justify-center" : ""
-                }`}
-              >
-                <span className={`text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white truncate ${hideWhenCollapsed}`}>
-                  Light / Dark
-                </span>
-                <ThemeToggle />
-              </div>
+            {/* Light / dark switch: a little sky (day or night); just an icon button on the collapsed rail */}
+            <div className="sb-theme mt-auto pt-2 shrink-0">
+              <span className={`block max-lg:w-44 ${collapsed ? "lg:hidden" : ""}`}><ThemeToggle variant="scene" /></span>
+              {collapsed && <ThemeToggle variant="round" className="hidden lg:flex mx-auto" />}
             </div>
           </div>
 

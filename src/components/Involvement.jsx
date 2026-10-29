@@ -43,7 +43,7 @@ const timeline = [
     entries: [
       { title: "(TICaP 21) To the Future and Beyond: Exploring The Limitless Possibilities for Budding Careers in Computing Technology", org: "FEU Institute of Technology", type: "Participation", when: "Oct 3, 2026", thumb: ticapThumb, full: ticapFull },
       { title: "DEVCON Code Smarter: Modern Software Development with AI", org: "DEVCON Manila Chapter", type: "Recognition", when: "Sep 6, 2026", thumb: devconThumb, full: devconFull },
-      { title: "(EDTEKCON 2026) Mission:LearnPossible2 - AI Hackathon", org: "Team No. 4", type: "Hackathon", when: "2026", thumb: edtekconThumb, portrait: true, full: edtekconFull },
+      { title: "(EDTEKCON 2026) Mission:LearnPossible2 - AI Hackathon", org: "Team No. 4", type: "Hackathon", when: "2026", thumb: edtekconThumb, full: edtekconFull },
     ],
   },
   {
@@ -87,7 +87,7 @@ export default function Involvement() {
     <FadeIn>
       <section id="involvement" className="section-container py-16 sm:py-20">
         <SectionHeader
-          number="04"
+          number="05"
           eyebrow="Involvement"
           title={<>Where I've <span className="text-pink-500">shown up</span></>}
           subtitle="Proof that I don't just talk the talk"

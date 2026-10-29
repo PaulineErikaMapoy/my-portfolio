@@ -6,8 +6,10 @@ import Hackathons from "./components/Hackathons";
 import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Skills from "./components/Skills";
+import Education from "./components/Education";
 import Involvement from "./components/Involvement";
 import EventsHost from "./components/EventsHost";
+import Videos from "./components/Videos";
 import SocialMedia from "./components/SocialMedia";       // new social section
 import Footer from "./components/Footer";
 import Preloader from "./components/Preloader";
@@ -34,6 +36,9 @@ export default function App() {
             <Hackathons />
           </div>
           <Projects />
+          <div className="band-dots-white">
+            <Education />
+          </div>
           <div className="band-blush">
             <Involvement />
           </div>
@@ -46,6 +51,7 @@ export default function App() {
           <div className="band-dots-white">
             <EventsHost />
           </div>
+          <Videos />
           <SocialMedia />
           {/* Inside the main column so the sticky sidebar stays put all the way to the bottom */}
           <Footer />

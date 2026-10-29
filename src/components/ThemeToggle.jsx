@@ -1,36 +1,30 @@
 // src/components/ThemeToggle.jsx
-import React, { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { useEffect, useState } from "react";
 
-// A little personality every time the theme changes
-const quips = {
-  dark: [
-    "Ooh, going dim. Very mysterious of you. 🌙",
-    "Lights off. Main character energy: activated.",
-    "Ah, I see you like it moody. Respect.",
-    "Welcome to the night shift. ✨",
-    "Your eyes just said thank you.",
-  ],
-  light: [
-    "Rise and shine! ☀️",
-    "Looking on the bright side, I see.",
-    "Lights on. Hope you brought sunglasses. 😎",
-    "Good morning, sunshine!",
-    "Back to the light. Bold choice.",
-  ],
-};
+const sunPath = "M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z";
+const moonPath = "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z";
+const Icon = ({ d, className }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+  </svg>
+);
 
-export default function ThemeToggle() {
+// variant: "scene" = a little sky (sunny day / starry night); "switch" = pill whose sliding knob turns
+// from sun to moon; "round" = single icon button
+export default function ThemeToggle({ variant = "switch", className = "" }) {
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
-  const [toast, setToast] = useState(null);
-  const lastQuip = useRef("");
-  const hideTimer = useRef(null);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
-  useEffect(() => () => clearTimeout(hideTimer.current), []);
+  // Stay in sync if another switch on the page changes the theme
+  useEffect(() => {
+    const html = document.documentElement;
+    const observer = new MutationObserver(() => setDark(html.classList.contains("dark")));
+    observer.observe(html, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
 
   function toggle() {
     const next = !dark;
@@ -41,53 +35,61 @@ export default function ThemeToggle() {
     } catch {
       /* storage blocked: the switch still works for this visit */
     }
-
-    // Pick a random line, never the same one twice in a row
-    const options = quips[next ? "dark" : "light"].filter((q) => q !== lastQuip.current);
-    const text = options[Math.floor(Math.random() * options.length)];
-    lastQuip.current = text;
-    setToast({ text, id: Date.now() });
-    clearTimeout(hideTimer.current);
-    hideTimer.current = setTimeout(() => setToast(null), 2600);
   }
+
+  const label = dark ? "Switch to light mode" : "Switch to dark mode";
 
   return (
     <>
-      <button
-        onClick={toggle}
-        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-        title={dark ? "Light mode" : "Dark mode"}
-        className="brutal-chip !rounded-full relative w-9 h-9 flex items-center justify-center flex-shrink-0 text-[var(--accent-ink)] hover:!bg-pink-50 dark:hover:!bg-pink-500/10"
-      >
-        {/* Sun */}
-        <svg
-          className={`absolute w-4.5 h-4.5 transition-all duration-500 ${dark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"}`}
-          fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+      {variant === "scene" ? (
+        <button
+          onClick={toggle}
+          role="switch"
+          aria-checked={dark}
+          aria-label={label}
+          title={label}
+          className={`theme-scene ${className}`}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-        </svg>
-        {/* Moon */}
-        <svg
-          className={`absolute w-4.5 h-4.5 transition-all duration-500 ${dark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"}`}
-          fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+          <span className="ts-sky ts-day" aria-hidden="true" />
+          <span className="ts-sky ts-night" aria-hidden="true" />
+          <span className="ts-stars" aria-hidden="true"><i /><i /><i /><i /><i /><i /></span>
+          <span className="ts-cloud ts-cloud-1" aria-hidden="true" />
+          <span className="ts-cloud ts-cloud-2" aria-hidden="true" />
+          <span className="ts-cloud ts-cloud-3" aria-hidden="true" />
+          <span className="ts-shooting" aria-hidden="true" />
+          <span className="ts-sun" aria-hidden="true" />
+          <span className="ts-moon" aria-hidden="true" />
+          <span className="ts-label ts-label-day" aria-hidden="true">Day</span>
+          <span className="ts-label ts-label-night" aria-hidden="true">Night</span>
+        </button>
+      ) : variant === "switch" ? (
+        <button
+          onClick={toggle}
+          role="switch"
+          aria-checked={dark}
+          aria-label={label}
+          title={label}
+          className={`theme-switch ${className}`}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-        </svg>
-      </button>
-
-      {/* Witty pop-up, rendered on <body> so it floats above everything */}
-      {toast &&
-        createPortal(
-          <div
-            key={toast.id}
-            role="status"
-            aria-live="polite"
-            className="theme-toast brutal-tag fixed top-1/2 left-1/2 z-[70] max-w-[calc(100vw-2rem)] px-5 py-4 rounded-xl bg-[var(--brutal-surface)] text-base font-black text-gray-900 dark:text-white text-center pointer-events-none"
-          >
-            {toast.text}
-          </div>,
-          document.body
-        )}
+          {/* Stars that twinkle in on the dark side */}
+          <span className="theme-switch-stars" aria-hidden="true"><i /><i /><i /></span>
+          {/* The knob carries the icon: a sun that turns into a moon as it slides over */}
+          <span className="theme-switch-knob" aria-hidden="true">
+            <Icon d={sunPath} className="theme-switch-icon theme-switch-sun" />
+            <Icon d={moonPath} className="theme-switch-icon theme-switch-moon" />
+          </span>
+        </button>
+      ) : (
+        <button
+          onClick={toggle}
+          aria-label={label}
+          title={label}
+          className={`brutal-chip !rounded-full relative w-11 h-11 flex items-center justify-center shrink-0 text-[var(--accent-ink)] hover:!bg-pink-50 dark:hover:!bg-pink-500/10 ${className}`}
+        >
+          <Icon d={sunPath} className={`absolute w-5 h-5 transition-all duration-500 ${dark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"}`} />
+          <Icon d={moonPath} className={`absolute w-5 h-5 transition-all duration-500 ${dark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"}`} />
+        </button>
+      )}
     </>
   );
 }

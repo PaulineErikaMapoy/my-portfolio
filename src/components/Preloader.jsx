@@ -41,6 +41,8 @@ export default function Preloader() {
       return () => clearTimeout(t);
     }
     if (stage === "opening") {
+      // Let the page know it's being revealed (the home dots fly into place on this)
+      window.dispatchEvent(new Event("intro:reveal"));
       const t = setTimeout(() => setStage("done"), IRIS_MS);
       return () => clearTimeout(t);
     }

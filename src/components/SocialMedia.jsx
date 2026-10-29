@@ -157,7 +157,7 @@ export default function SocialMedia() {
 
         {/* Header */}
         <SectionHeader
-          number="08"
+          number="10"
           eyebrow="Socials"
           title={<>Let's stay <span className="text-pink-500">connected</span></>}
           subtitle="Find me around the internet"

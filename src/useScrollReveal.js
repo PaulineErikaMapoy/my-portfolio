@@ -1,5 +1,5 @@
 // src/useScrollReveal.js
-// Reveals content as you scroll: each card / block slides up and fades in when it
+// Fallback for older browsers: each card / block slides up and fades in when it
 // enters the screen. Things that appear together are slightly staggered.
 import { useEffect } from "react";
 
@@ -9,6 +9,8 @@ const TARGETS = "main .brutal-card, main [data-reveal], footer .brutal-card";
 export default function useScrollReveal() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Modern browsers get scroll-linked entrances from CSS instead (see "Scroll-driven" in index.css)
+    if (window.CSS?.supports?.("animation-timeline: view()")) return;
 
     const els = [...document.querySelectorAll(TARGETS)];
     // Anything already on screen at load stays put (no flash on the first view)
@@ -21,7 +23,7 @@ export default function useScrollReveal() {
         showing
           .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top || a.getBoundingClientRect().left - b.getBoundingClientRect().left)
           .forEach((el, i) => {
-            const delay = Math.min(i * 90, 450);
+            const delay = Math.min(i * 130, 650);
             el.style.setProperty("--sr-delay", `${delay}ms`);
             el.setAttribute("data-sr", "in");
             observer.unobserve(el);
@@ -29,7 +31,7 @@ export default function useScrollReveal() {
             setTimeout(() => {
               el.removeAttribute("data-sr");
               el.style.removeProperty("--sr-delay");
-            }, 900 + delay);
+            }, 1300 + delay);
           });
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
